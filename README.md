@@ -8,7 +8,7 @@ Get all articles - api/articles/
 
 Get single article by id - api/articles/1/
 
-Get single artcile by slug api/articles/your_slug/
+Get single article by slug api/articles/your_slug/
 
 ## Comments
 
