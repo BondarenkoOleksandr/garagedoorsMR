@@ -21,7 +21,7 @@ class Article(models.Model):
         max_length=100,
         editable=False,
         unique=True,
-        default=slugify(title),
+        default=uuid.uuid1(),
     )
     tags = TaggableManager()
     publish_date = models.DateField(auto_now_add=True)
