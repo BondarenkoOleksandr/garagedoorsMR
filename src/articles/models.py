@@ -5,6 +5,7 @@ from django.db.models import Avg
 import uuid
 from django_quill.fields import QuillField
 from django.utils.text import slugify
+from taggit.managers import TaggableManager
 
 
 # Create your models here.
@@ -15,13 +16,14 @@ class Article(models.Model):
     author = models.ForeignKey(User, related_name='poster', on_delete=models.SET_NULL, null=True)
     image = models.ImageField(default='default-picture.png', upload_to='articles/', null=True)
     title = models.CharField(max_length=100)
-    content = QuillField()
+    excerpt = models.TextField(max_length=250, null=True)
     slug = models.SlugField(
         max_length=100,
         editable=False,
         unique=True,
-        default=slugify(title)
+        default=slugify(title),
     )
+    tags = TaggableManager()
     publish_date = models.DateField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='article_like', editable=False)
 
@@ -37,13 +39,13 @@ class Article(models.Model):
 
     @property
     def views_count(self):
-        return ArticleViews.objects.filter(article=self).count()
+        return ArticleView.objects.filter(article=self).count()
 
     def get_slug(self):
         return self.slug
 
 
-class ArticleViews(models.Model):
+class ArticleView(models.Model):
     IPAddress = models.GenericIPAddressField(default="45.243.82.169")
     article = models.ForeignKey('Article', on_delete=models.CASCADE)
 
@@ -90,3 +92,16 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text[0:15] + ' - ' + self.article.title + ' - ' + self.user.username
+
+
+class Paragraphs(models.Model):
+    title = models.CharField(max_length=100)
+    text = models.TextField()
+    image = models.ImageField(upload_to='articles/par/', null=True, blank=True)
+    article = models.ForeignKey(
+        to=Article,
+        null=False,
+        on_delete=models.CASCADE,
+        verbose_name='Абзацы:',
+        related_name='paragraphs',
+    )
