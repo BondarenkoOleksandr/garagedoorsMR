@@ -10,7 +10,11 @@ Get single article by id - api/articles/id/
 
 Get single article by slug api/articles/your_slug/
 
-## Comments
+### Rating
+Set single article rating - set_rating/article_id/
+
+### Comments
+Get all article comments - get_comments/article_id/
 
 ## Cities
 ## Employees
