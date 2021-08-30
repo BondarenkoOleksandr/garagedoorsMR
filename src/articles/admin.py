@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from articles.models import Article, Paragraphs, Comment
+from articles.models import Article, Paragraphs, Comment, ArticleRating
 
 
 class ArticleInlines(admin.TabularInline):

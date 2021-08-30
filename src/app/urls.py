@@ -25,6 +25,7 @@ urlpatterns = [
     path('', index),
     path('articles/', include('articles.urls')),
     path('api/', include('articles.api.urls')),
+    path('api/', include('employees.api.urls')),
 ]
 
 urlpatterns += \

@@ -1,13 +1,14 @@
 import json
 
+from django.db.models import Avg
 from django.http import JsonResponse
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
-from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404
+from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404, CreateAPIView
 from taggit.models import Tag
 from django.forms.models import model_to_dict
 
-from articles.api.serializers import ArticleSerializer, TagSerializer, CommentSerializer
+from articles.api.serializers import ArticleSerializer, TagSerializer, CommentSerializer, ArticleRatingSerializer
 from articles.models import Article, Comment, ArticleRating, ArticleView, Paragraphs
 from core.utils import get_user_ip
 
@@ -21,7 +22,12 @@ class ArticleListView(ListAPIView):
         for article in articles:
             article.update({'comments_count': Comment.objects.filter(article__id=article['id'], status=1).count(),
                             'views_count': ArticleView.objects.filter(IPAddress=get_user_ip(request),
-                                                                      article__id=article['id']).count()})
+                                                                      article__id=article['id']).count(),
+                            'rating': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
+                                                                   article__id=article['id']).aggregate(Avg('rating')),
+                            'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
+                                                                        article__id=article['id']).count()
+                            })
         articles = json.dumps(list(articles), cls=DjangoJSONEncoder)
 
         data = {"articles": articles}
@@ -52,10 +58,15 @@ class ArticleDetailView(RetrieveAPIView):
                                  'publish_date', 'slug')
         for art in article:
             print(id)
-            paragr = [model_to_dict(model, fields=['title', 'text', 'image__url']) for model in Paragraphs.objects.filter(article__id=id)]
+            paragr = [model_to_dict(model, fields=['title', 'text', 'quote', 'image__url']) for model in
+                      Paragraphs.objects.filter(article__id=id)]
             print(paragr)
             art.update({'comments_count': Comment.objects.filter(article__id=id, status=1).count(),
                         'views_count': ArticleView.objects.filter(IPAddress=get_user_ip(request),
+                                                                  article__id=id).count(),
+                        'rating': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
+                                                                  article__id=id).aggregate(Avg('rating')),
+                        'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                   article__id=id).count(),
                         'paragraphs': paragr})
         article = json.dumps(list(article), cls=DjangoJSONEncoder)
@@ -63,3 +74,18 @@ class ArticleDetailView(RetrieveAPIView):
         data = {"article": article}
 
         return JsonResponse(data)
+
+
+class ArticleRatingCreateView(CreateAPIView):
+    queryset = ArticleRating.objects.all()
+    serializer_class = ArticleRatingSerializer
+
+    def post(self, request, id):
+        article = Article.objects.get(id=id)
+        rating = self.request.POST.get('rating', 5)
+        obj, created = ArticleRating.objects.get_or_create(IPAddress=get_user_ip(request), article=article)
+        if obj:
+            obj.rating = rating
+            obj.save()
+
+        return JsonResponse({'success': 1, 'rating': obj.rating})

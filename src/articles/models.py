@@ -62,8 +62,8 @@ class ArticleRating(models.Model):
         (5, 'Excellent'),
     )
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='article_rating')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    rating = models.SmallIntegerField(choices=STARS)
+    rating = models.SmallIntegerField(choices=STARS,null=True, default=STARS[0])
+    IPAddress = models.GenericIPAddressField(default="45.243.82.169")
 
     @property
     def get_rating(self):
@@ -95,9 +95,10 @@ class Comment(models.Model):
 
 
 class Paragraphs(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, null=True, blank=True)
     text = models.TextField()
     image = models.ImageField(upload_to='articles/par/', null=True, blank=True)
+    quote = models.TextField(max_length=250, blank=True, null=True)
     article = models.ForeignKey(
         to=Article,
         null=False,
@@ -105,3 +106,6 @@ class Paragraphs(models.Model):
         verbose_name='Абзацы:',
         related_name='paragraphs',
     )
+
+    class Meta:
+        verbose_name_plural = "Paragraphs"

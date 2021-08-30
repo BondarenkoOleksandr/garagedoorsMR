@@ -1,7 +1,7 @@
 from django.urls import path
 
 
-from articles.api.views import ArticleListView, TagsListView, ArticleCommentListView, ArticleDetailView
+from articles.api.views import ArticleListView, TagsListView, ArticleCommentListView, ArticleDetailView, ArticleRatingCreateView
 
 app_name = 'articles_api'
 
@@ -10,4 +10,5 @@ urlpatterns = [
     path('articles/<int:id>/', ArticleDetailView.as_view(), name='single-article'),
     path('tags/', TagsListView.as_view(), name='articles-list'),
     path('get_comments/<int:id>/', ArticleCommentListView.as_view(), name='article-get-comments'),
+    path('set_rating/<int:id>/', ArticleRatingCreateView.as_view(), name='article-set-rating'),
 ]
