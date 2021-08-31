@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-from cities.models import State
+from states.models import State
 
 
 class Employee(models.Model):
