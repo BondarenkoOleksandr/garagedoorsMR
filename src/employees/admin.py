@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from employees.models import Employee, State, Review
+from employees.models import Employee, Review
 
 
 class EmployeeInlines(admin.TabularInline):
@@ -13,5 +13,3 @@ class EmployeeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Employee, EmployeeAdmin)
-admin.site.register(State)
-# admin.site.register(Review)

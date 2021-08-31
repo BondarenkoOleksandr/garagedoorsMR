@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from cities.models import State
 
 
 class Employee(models.Model):
@@ -8,17 +9,10 @@ class Employee(models.Model):
     photo = models.ImageField(upload_to='employees/', null=True)
     position = models.CharField(max_length=100)
     type_of_works = models.TextField()
-    state = models.OneToOneField(to='employees.State', on_delete=models.SET_NULL, null=True)
+    state = models.OneToOneField(to=State, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return self.name + ' - ' +self.position
-
-
-class State(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
+        return self.name + ' - ' + self.position
 
 
 class Review(models.Model):
