@@ -32,7 +32,7 @@ Get single employee - api/employees/id/
 
 Create review - api/employee/create_review/
                 
-                api/employee/create_review/?name=Test&text=Test&rating=5&employee=32
+    api/employee/create_review/?name=Test&text=Test&rating=5&employee=32
 
     args - name, text, rating(Int), employee(Int)
 
