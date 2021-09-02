@@ -24,9 +24,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
     path('articles/', include('articles.urls')),
+]
+
+urlpatterns += [
     path('api/', include('articles.api.urls')),
     path('api/', include('employees.api.urls')),
     path('api/', include('cities.api.urls')),
+    path('api/', include('states.api.urls')),
+    path('api/', include('services.api.urls')),
 ]
 
 urlpatterns += \
