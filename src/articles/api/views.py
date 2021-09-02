@@ -7,7 +7,6 @@ from django.core.serializers.json import DjangoJSONEncoder
 from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404, CreateAPIView
 from taggit.models import Tag
 from django.forms.models import model_to_dict
-
 from articles.api.serializers import ArticleSerializer, TagSerializer, CommentSerializer, ArticleRatingSerializer
 from articles.models import Article, Comment, ArticleRating, ArticleView, Paragraphs
 from core.utils import get_user_ip
