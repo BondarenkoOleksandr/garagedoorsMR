@@ -6,11 +6,14 @@ from states.models import State
 
 class City(models.Model):
     state = models.ForeignKey(to=State, on_delete=models.CASCADE,null=True)
-    name = models.CharField(max_length=150,null=True)
+    name = models.CharField(max_length=150, null=True)
     description = models.TextField(null=True)
 
     class Meta:
         verbose_name_plural = "Cities"
+
+    def __str__(self):
+        return self.name
 
 
 class FirstScreen(models.Model):
@@ -29,7 +32,6 @@ class SecondScreen(models.Model):
     main_description = models.TextField()
     sec_title = models.CharField(max_length=250)
     sec_description = models.TextField()
-    list = models.ForeignKey(to='cities.Paragraphs', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name_plural = "Second Screen"
@@ -51,3 +53,4 @@ class ThirdScreen(models.Model):
 
 class Paragraphs(models.Model):
     text = models.TextField(max_length=250)
+    state = models.ForeignKey(to='cities.Paragraphs', on_delete=models.CASCADE, related_name='list', null=True)

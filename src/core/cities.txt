@@ -150,7 +150,7 @@ Winthrop Harbor	Illinois
 Posen	Illinois
 Lake Bluff	Illinois
 Willow Springs	Illinois
-Robbins	Illinois
+Robbins Illinois
 Highwood	Illinois
 Berkeley	Illinois
 Monee	Illinois
@@ -163,7 +163,7 @@ Wadsworth	Illinois
 Kenilworth	Illinois
 Wayne	Illinois
 Thornton	Illinois
-Willowbrook	Illinois
+Willowbrook     Illinois
 Bedford Park	Illinois
 Golf	Illinois
 Wilmington	Delaware

@@ -20,5 +20,3 @@ def get_user_ip(request):
         return ip
 
 
-def city_model_generator():
-    pass
