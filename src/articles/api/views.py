@@ -56,17 +56,21 @@ class ArticleDetailView(RetrieveAPIView):
         article = article.values('id', 'author__username', 'title', 'excerpt', 'image',
                                  'publish_date', 'slug')
         for art in article:
-            print(id)
-            paragr = [model_to_dict(model, fields=['title', 'text', 'quote', 'image__url']) for model in
-                      Paragraphs.objects.filter(article__id=id)]
-            print(paragr)
+            paragr = []
+            for model in Paragraphs.objects.filter(article__id=id):
+                dict_model = model_to_dict(model, fields=['title', 'text', 'quote'])
+                try:
+                    dict_model.update({'image': request.build_absolute_uri(model.image.url)})
+                except:
+                    dict_model.update({'image': None})
+                paragr.append(dict_model)
             art.update({'comments_count': Comment.objects.filter(article__id=id, status=1).count(),
                         'views_count': ArticleView.objects.filter(IPAddress=get_user_ip(request),
                                                                   article__id=id).count(),
                         'rating': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
-                                                                  article__id=id).aggregate(Avg('rating')),
+                                                               article__id=id).aggregate(Avg('rating')),
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
-                                                                  article__id=id).count(),
+                                                                    article__id=id).count(),
                         'paragraphs': paragr})
         article = json.dumps(list(article), cls=DjangoJSONEncoder)
 
