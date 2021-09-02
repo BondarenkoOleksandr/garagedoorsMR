@@ -25,7 +25,7 @@ Get single city - api/cities/<int:id>/
 
 Get all states - api/states/
 
-Get single state - states/<int:id>/
+Get single state - api/states/<int:id>/
 
 ## Employees
 Get all employees - api/employees/
