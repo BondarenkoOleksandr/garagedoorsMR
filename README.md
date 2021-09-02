@@ -18,11 +18,13 @@ Get all article comments - api/get_comments/<int:article_id>/
 
 ## Cities
 Get all cities - api/cities/
+
 Get single city - api/cities/<int:id>/
 
 ## States
 
 Get all states - api/states/
+
 Get single state - states/<int:id>/
 
 ## Employees
