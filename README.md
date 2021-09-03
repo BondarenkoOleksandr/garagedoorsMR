@@ -8,7 +8,9 @@ Get all articles - api/articles/
 
 Get single article by id - api/articles/<int:id>/?rating=<int:rating>
 
-Get single article by slug api/articles/<slug:your_slug>/
+Get single article by slug - api/articles/<slug:your_slug>/
+
+Get articles by tags - api/articles/by_tags/?tags=wolf,cat,dog
 
 ### Rating
 Set single article rating - api/set_rating/<int:article_id>/
