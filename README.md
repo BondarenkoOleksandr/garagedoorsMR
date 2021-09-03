@@ -6,7 +6,7 @@ Backend for Garage Doors Multiregional
 ## Articles
 Get all articles - api/articles/
 
-Get single article by id - api/articles/<int:id>/
+Get single article by id - api/articles/<int:id>/?rating=<int:rating>
 
 Get single article by slug api/articles/<slug:your_slug>/
 
