@@ -37,4 +37,10 @@ Create review - api/employee/create_review/
     api/employee/create_review/?name=Test&text=Test&rating=5&employee=32
 
     args - name, text, rating(Int), employee(Int)
+   
+## Reviews
+
+Get all reviews - api/reviews/
+
+Get single review - api/reviews/<int:id>/
 
