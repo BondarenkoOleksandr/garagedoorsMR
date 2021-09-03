@@ -16,6 +16,10 @@ Set single article rating - api/set_rating/<int:article_id>/
 ### Comments
 Get all article comments - api/get_comments/<int:article_id>/
 
+### Tags
+
+Get all tags - api/tags/
+
 ## Cities
 Get all cities - api/cities/
 
