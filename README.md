@@ -43,8 +43,18 @@ Create review - api/employee/create_review/
     api/employee/create_review/?name=Test&text=Test&rating=5&employee=32
 
     args - name, text, rating(Int), employee(Int)
+
+# Services
+
+Get all services - api/services/
+
+Get all services categories - api/services/categories/
+
+Get all services in category by slug - api/services/category/<slug:slug>/
+
+Get single service by slug - api/services/<slug:slug>/
    
-## Reviews
+# Reviews
 
 Get all reviews - api/reviews/
 
