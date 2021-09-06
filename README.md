@@ -60,6 +60,12 @@ Get all reviews - api/reviews/
 
 Get single review - api/reviews/<int:id>/
 
+# FAQs
+
+Get all faqs - faqs/
+
+Get all faqs by service - api/faqs/<int:id>/
+
 # Registration/Login
 
 486436967116-tiadudc1f9rmoj9c94rgp86q5ppks5pb.apps.googleusercontent.com - clientId
