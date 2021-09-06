@@ -66,6 +66,10 @@ Get all faqs - faqs/
 
 Get all faqs by service - api/faqs/<int:id>/
 
+# Coupons
+
+Get all coupons - api/coupons/
+
 # Registration/Login
 
 486436967116-tiadudc1f9rmoj9c94rgp86q5ppks5pb.apps.googleusercontent.com - clientId
