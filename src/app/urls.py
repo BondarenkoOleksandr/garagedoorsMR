@@ -18,15 +18,25 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from app.view import index
+from app.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
     path('articles/', include('articles.urls')),
+    # path('accounts/', include('accounts.urls')),
+    path('auth/', include('rest_framework_social_oauth2.urls')),
+]
+
+urlpatterns += [
     path('api/', include('articles.api.urls')),
     path('api/', include('employees.api.urls')),
     path('api/', include('cities.api.urls')),
+    path('api/', include('states.api.urls')),
+    path('api/', include('services.api.urls')),
+    path('api/', include('reviews.api.urls')),
+    path('api/', include('faq.api.urls')),
+    path('api/', include('coupons.api.urls')),
 ]
 
 urlpatterns += \

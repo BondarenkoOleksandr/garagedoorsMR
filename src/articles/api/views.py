@@ -17,16 +17,23 @@ class ArticleListView(ListAPIView):
     serializer_class = ArticleSerializer
 
     def get(self, request):
-        articles = Article.objects.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date', 'slug')
+        articles = Article.objects.all()
+        tags_list = [list(article.tags.values('name')) for article in articles]
+        articles = Article.objects.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date',
+                                          'slug')
+        indx = 0
         for article in articles:
             article.update({'comments_count': Comment.objects.filter(article__id=article['id'], status=1).count(),
                             'views_count': ArticleView.objects.filter(IPAddress=get_user_ip(request),
                                                                       article__id=article['id']).count(),
                             'rating': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
-                                                                   article__id=article['id']).aggregate(Avg('rating')),
+                                                                   article__id=article['id']).aggregate(
+                                Avg('rating')),
                             'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
-                                                                        article__id=article['id']).count()
+                                                                        article__id=article['id']).count(),
+                            'tags': tags_list[indx]
                             })
+            indx+=1
         articles = json.dumps(list(articles), cls=DjangoJSONEncoder)
 
         data = {"articles": articles}
@@ -92,3 +99,31 @@ class ArticleRatingCreateView(CreateAPIView):
             obj.save()
 
         return JsonResponse({'success': 1, 'rating': obj.rating})
+
+
+class ArticleByTagView(RetrieveAPIView):
+    def get(self, request, *args, **kwargs):
+        search_tags = self.request.GET.get('tags', '').split(',')
+        articles_by_tag = Article.objects.filter(tags__name__in=search_tags).distinct()
+        tags_list = [list(obj.tags.values('name')) for obj in articles_by_tag]
+        articles_by_tag = articles_by_tag.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date',
+                                          'slug')
+        indx = 0
+        for article in articles_by_tag:
+            article.update(
+                {'comments_count': Comment.objects.filter(article__id=article['id'], status=1).count(),
+                 'views_count': ArticleView.objects.filter(IPAddress=get_user_ip(request),
+                                                           article__id=article['id']).count(),
+                 'rating': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
+                                                        article__id=article['id']).aggregate(
+                     Avg('rating')),
+                 'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
+                                                             article__id=article['id']).count(),
+                 'tags': tags_list[indx],
+                 })
+            indx+=1
+        articles_by_tag = json.dumps(list(articles_by_tag), cls=DjangoJSONEncoder)
+
+        data = {"articles": articles_by_tag}
+
+        return JsonResponse(data)

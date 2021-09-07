@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+
+  backend:
+    build: ./
+    container_name: gdr_mr_container
+    restart: always
+    command: ./commands/start_server.sh
+    ports:
+      - "${PORT}:${WSGI_PORT}"
+    volumes:
+      - ./src:/srv/project/src
+      - ./commands:/srv/project/commands
+      - static_content:/var/www/gdr_mr
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:12
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+#    environment:
+#      - DJANGO_SETTINGS_MODULE=ArtAds.settings.${MODE}
+
+  nginx:
+    image: nginx:1.19
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static_content:/var/www/gdr_mr
+    ports:
+      - 80:80
+      - 443:443
+    env_file:
+      - .env
+    depends_on:
+      - backend
+
+volumes:
+  pg_data: {}
+  static_content: {}

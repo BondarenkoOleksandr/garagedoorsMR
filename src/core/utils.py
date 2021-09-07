@@ -20,3 +20,12 @@ def get_user_ip(request):
         return ip
 
 
+def add_images_path(request, model, data):
+    if model.firstscreen.image:
+        data['first_screen'].update({'image': request.build_absolute_uri(model.firstscreen.image.url)})
+    if model.thirdscreen.image:
+        data['third_screen'].update({'image': request.build_absolute_uri(model.thirdscreen.image.url)})
+
+    return data
+
+

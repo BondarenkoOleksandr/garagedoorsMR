@@ -1,10 +1,8 @@
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Avg
-import uuid
-from django_quill.fields import QuillField
-from django.utils.text import slugify
+
+from django.core.exceptions import ValidationError
 from taggit.managers import TaggableManager
 
 
@@ -21,14 +19,13 @@ class Article(models.Model):
         max_length=100,
         editable=False,
         unique=True,
-        default=uuid.uuid1(),
     )
     tags = TaggableManager()
     publish_date = models.DateField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='article_like', editable=False)
 
     def clean(self):
-        if not self.slug and Article.objects.filter(title=self.title):
+        if not self.slug and Article.objects.filter(title__iexact=self.title):
             raise ValidationError('Article with this title already exists')
 
     def __str__(self):
