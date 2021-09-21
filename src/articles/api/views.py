@@ -61,7 +61,7 @@ class ArticleDetailView(RetrieveAPIView):
         article = Article.objects.filter(id=id)
         if not article:
             return JsonResponse(['Article not fount'], safe=False)
-        tags_list = list(article.tags.values('name'))
+        tags_list = list(article.first().tags.values('name'))
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
         article = article.values('id', 'author__username', 'title', 'excerpt', 'image',
                                  'publish_date', 'slug')
@@ -102,7 +102,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
         article = Article.objects.filter(slug=slug)
         if not article:
             return JsonResponse(['Article not fount'], safe=False)
-        tags_list = list(article.tags.values('name'))
+        tags_list = list(article.first().tags.values('name'))
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
         article = article.values('id', 'author__username', 'title', 'excerpt', 'image',
                                  'publish_date', 'slug')
