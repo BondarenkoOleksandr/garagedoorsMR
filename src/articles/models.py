@@ -21,7 +21,7 @@ class Article(models.Model):
         unique=True,
     )
     tags = TaggableManager()
-    publish_date = models.DateField(auto_now_add=True)
+    publish_date = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='article_like', editable=False)
 
     def clean(self):
