@@ -35,9 +35,9 @@ class ArticleListView(ListAPIView):
                             'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                         article__id=article['id']).count(),
                             'tags': tags_list[indx],
-                            'image': request.path + base.MEDIA_URL + article['image'],
+                            'image': request.get_host() + base.MEDIA_URL + article['image'],
                             })
-            indx+=1
+            indx += 1
 
         data = list(articles)
 
@@ -86,7 +86,7 @@ class ArticleDetailView(RetrieveAPIView):
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__id=id).count(),
                         'tags': tags_list,
-                        'image': request.path + base.MEDIA_URL + art['image'],
+                        'image': request.get_host() + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr})
 
         data = list(article)
@@ -123,11 +123,11 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__slug=slug).count(),
                         'tags': tags_list,
-                        'image': request.path + base.MEDIA_URL + article['image'],
+                        'image': request.get_host() + base.MEDIA_URL + article['image'],
                         'paragraphs': paragr})
 
         try:
-            article.first().update({'image': request.path + base.MEDIA_URL + art['image']})
+            article.first().update({'image': request.get_host() + base.MEDIA_URL + art['image']})
         except:
             article.first().update({'image': None})
 
@@ -157,7 +157,7 @@ class ArticleByTagView(RetrieveAPIView):
         articles_by_tag = Article.objects.filter(tags__name__in=search_tags).distinct()
         tags_list = [list(obj.tags.values('name')) for obj in articles_by_tag]
         articles_by_tag = articles_by_tag.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date',
-                                          'slug')
+                                                 'slug')
         indx = 0
         for article in articles_by_tag:
             article.update(
@@ -171,7 +171,7 @@ class ArticleByTagView(RetrieveAPIView):
                                                              article__id=article['id']).count(),
                  'tags': tags_list[indx],
                  })
-            indx+=1
+            indx += 1
 
         data = list(articles_by_tag)
 
