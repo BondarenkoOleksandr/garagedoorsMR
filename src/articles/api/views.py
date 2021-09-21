@@ -38,7 +38,7 @@ class ArticleListView(ListAPIView):
 
         data = list(articles)
 
-        return JsonResponse(data, safe=False, json_dumps_params={'indent': 4})
+        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
 
 class TagsListView(ListAPIView):
@@ -59,9 +59,12 @@ class ArticleDetailView(RetrieveAPIView):
 
     def get(self, request, id):
         article = Article.objects.filter(id=id)
+        if not article:
+            return JsonResponse(['Article not fount'], safe=False)
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
         article = article.values('id', 'author__username', 'title', 'excerpt', 'image',
                                  'publish_date', 'slug')
+
         for art in article:
             paragr = []
             for model in Paragraphs.objects.filter(article__id=id):
@@ -79,11 +82,15 @@ class ArticleDetailView(RetrieveAPIView):
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__id=id).count(),
                         'paragraphs': paragr})
-        article = json.dumps(list(article), cls=DjangoJSONEncoder)
 
-        data = {"article": article}
+        try:
+            article.first().update({'image': request.build_absolute_uri(article.first()['image'])})
+        except:
+            article.first().update({'image': None})
 
-        return JsonResponse(data)
+        data = list(article)
+
+        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
 
 class ArticleRatingCreateView(CreateAPIView):
