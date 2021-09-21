@@ -8,6 +8,8 @@ from requests import Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404, CreateAPIView
 from taggit.models import Tag
 from django.forms.models import model_to_dict
+
+from app.settings import base
 from articles.api.serializers import ArticleSerializer, TagSerializer, CommentSerializer, ArticleRatingSerializer
 from articles.models import Article, Comment, ArticleRating, ArticleView, Paragraphs
 from core.utils import get_user_ip
@@ -33,7 +35,7 @@ class ArticleListView(ListAPIView):
                             'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                         article__id=article['id']).count(),
                             'tags': tags_list[indx],
-                            'image': request.build_absolute_uri(article['image']),
+                            'image': request.path + base.MEDIA_URL + article.first()['image'],
                             })
             indx+=1
 
@@ -84,7 +86,7 @@ class ArticleDetailView(RetrieveAPIView):
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__id=id).count(),
                         'tags': tags_list,
-                        'image': request.build_absolute_uri(art['image']),
+                        'image': request.path + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr})
 
         try:
@@ -126,11 +128,11 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__slug=slug).count(),
                         'tags': tags_list,
-                        'image': request.build_absolute_uri(art['image']),
+                        'image': request.path + base.MEDIA_URL + article['image'],
                         'paragraphs': paragr})
 
         try:
-            article.first().update({'image': request.build_absolute_uri(article.first()['image'])})
+            article.first().update({'image': request.path + base.MEDIA_URL + article.first()['image']})
         except:
             article.first().update({'image': None})
 
