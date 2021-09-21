@@ -4,6 +4,7 @@ from django.db.models import Avg
 from django.http import JsonResponse
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
+from requests import Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404, CreateAPIView
 from taggit.models import Tag
 from django.forms.models import model_to_dict
@@ -34,11 +35,10 @@ class ArticleListView(ListAPIView):
                             'tags': tags_list[indx]
                             })
             indx+=1
-        articles = json.dumps(list(articles), cls=DjangoJSONEncoder)
 
-        data = {"articles": articles}
+        data = list(articles)
 
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False, json_dumps_params={'indent': 4})
 
 
 class TagsListView(ListAPIView):
