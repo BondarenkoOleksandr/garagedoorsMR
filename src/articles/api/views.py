@@ -86,7 +86,7 @@ class ArticleDetailView(RetrieveAPIView):
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__id=id).count(),
                         'tags': tags_list,
-                        'image': request.get_host() + '/' + base.MEDIA_URL + article['image'],
+                        'image': request.get_host()+ '/' + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr})
 
         data = list(article)
@@ -123,11 +123,11 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__slug=slug).count(),
                         'tags': tags_list,
-                        'image': request.get_host() + '/' + base.MEDIA_URL + article['image'],
+                        'image': request.get_host() + '/' + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr})
 
         try:
-            article.first().update({'image': request.get_host() + '/' + base.MEDIA_URL + article['image']})
+            article.first().update({'image': request.get_host() + base.MEDIA_URL + art['image']})
         except:
             article.first().update({'image': None})
 
