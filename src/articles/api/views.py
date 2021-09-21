@@ -93,6 +93,45 @@ class ArticleDetailView(RetrieveAPIView):
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
 
+class ArticleDetailBySlugView(RetrieveAPIView):
+    serializer_class = ArticleSerializer
+
+    def get(self, request, slug):
+        article = Article.objects.filter(slug=slug)
+        if not article:
+            return JsonResponse(['Article not fount'], safe=False)
+        obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
+        article = article.values('id', 'author__username', 'title', 'excerpt', 'image',
+                                 'publish_date', 'slug')
+
+        for art in article:
+            paragr = []
+            for model in Paragraphs.objects.filter(article__slug=slug):
+                dict_model = model_to_dict(model, fields=['title', 'text', 'quote'])
+                try:
+                    dict_model.update({'image': request.build_absolute_uri(model.image.url)})
+                except:
+                    dict_model.update({'image': None})
+                paragr.append(dict_model)
+            art.update({'comments_count': Comment.objects.filter(article__slug=slug, status=1).count(),
+                        'views_count': ArticleView.objects.filter(IPAddress=get_user_ip(request),
+                                                                  article__slug=slug).count(),
+                        'rating': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
+                                                               article__slug=slug).aggregate(Avg('rating')),
+                        'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
+                                                                    article__slug=slug).count(),
+                        'paragraphs': paragr})
+
+        try:
+            article.first().update({'image': request.build_absolute_uri(article.first()['image'])})
+        except:
+            article.first().update({'image': None})
+
+        data = list(article)
+
+        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
+
+
 class ArticleRatingCreateView(CreateAPIView):
     queryset = ArticleRating.objects.all()
     serializer_class = ArticleRatingSerializer
@@ -129,8 +168,7 @@ class ArticleByTagView(RetrieveAPIView):
                  'tags': tags_list[indx],
                  })
             indx+=1
-        articles_by_tag = json.dumps(list(articles_by_tag), cls=DjangoJSONEncoder)
 
-        data = {"articles": articles_by_tag}
+        data = list(articles_by_tag)
 
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
