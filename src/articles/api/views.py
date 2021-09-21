@@ -81,7 +81,7 @@ class ArticleDetailView(RetrieveAPIView):
                                                                article__id=id).aggregate(Avg('rating')),
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__id=id).count(),
-                        'tags': art.tags.values('name'),
+                        'tags': list(art.tags.values('name')),
                         'paragraphs': paragr})
 
         try:
@@ -121,7 +121,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                                                                article__slug=slug).aggregate(Avg('rating')),
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__slug=slug).count(),
-                        'tags': art.tags.values('name'),
+                        'tags': list(art.tags.values('name')),
                         'paragraphs': paragr})
 
         try:
