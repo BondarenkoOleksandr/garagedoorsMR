@@ -35,7 +35,7 @@ class ArticleListView(ListAPIView):
                             'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                         article__id=article['id']).count(),
                             'tags': tags_list[indx],
-                            'image': request.get_host() + base.MEDIA_URL + article['image'],
+                            'image': request.get_host() + '/' + base.MEDIA_URL + article['image'],
                             })
             indx += 1
 
