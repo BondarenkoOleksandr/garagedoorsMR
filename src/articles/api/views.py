@@ -81,6 +81,7 @@ class ArticleDetailView(RetrieveAPIView):
                                                                article__id=id).aggregate(Avg('rating')),
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__id=id).count(),
+                        'tags': art.tags.values('name'),
                         'paragraphs': paragr})
 
         try:
@@ -88,7 +89,7 @@ class ArticleDetailView(RetrieveAPIView):
         except:
             article.first().update({'image': None})
 
-        data = list(article)
+        data = article
 
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
@@ -120,6 +121,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                                                                article__slug=slug).aggregate(Avg('rating')),
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__slug=slug).count(),
+                        'tags': art.tags.values('name'),
                         'paragraphs': paragr})
 
         try:
