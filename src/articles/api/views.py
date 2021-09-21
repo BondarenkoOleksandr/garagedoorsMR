@@ -32,7 +32,8 @@ class ArticleListView(ListAPIView):
                                 Avg('rating')),
                             'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                         article__id=article['id']).count(),
-                            'tags': tags_list[indx]
+                            'tags': tags_list[indx],
+                            'image': request.build_absolute_uri(article['image']),
                             })
             indx+=1
 
@@ -83,6 +84,7 @@ class ArticleDetailView(RetrieveAPIView):
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__id=id).count(),
                         'tags': tags_list,
+                        'image': request.build_absolute_uri(art['image']),
                         'paragraphs': paragr})
 
         try:
@@ -124,6 +126,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__slug=slug).count(),
                         'tags': tags_list,
+                        'image': request.build_absolute_uri(art['image']),
                         'paragraphs': paragr})
 
         try:
