@@ -12,14 +12,12 @@ class ExtendedEncoder(DjangoJSONEncoder):
 
 def get_user_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    print(x_forwarded_for)
     if x_forwarded_for:
-        print(x_forwarded_for.split(','))
         ip = x_forwarded_for.split(',')[0]
     else:
         ip = request.META.get('REMOTE_ADDR')
 
-        return ip
+    return ip
 
 
 def add_images_path(request, model, data):
