@@ -61,6 +61,7 @@ class ArticleDetailView(RetrieveAPIView):
         article = Article.objects.filter(id=id)
         if not article:
             return JsonResponse(['Article not fount'], safe=False)
+        tags_list = list(article.tags.values('name'))
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
         article = article.values('id', 'author__username', 'title', 'excerpt', 'image',
                                  'publish_date', 'slug')
@@ -81,7 +82,7 @@ class ArticleDetailView(RetrieveAPIView):
                                                                article__id=id).aggregate(Avg('rating')),
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__id=id).count(),
-                        'tags': list(art.tags.values('name')),
+                        'tags': tags_list,
                         'paragraphs': paragr})
 
         try:
@@ -101,6 +102,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
         article = Article.objects.filter(slug=slug)
         if not article:
             return JsonResponse(['Article not fount'], safe=False)
+        tags_list = list(article.tags.values('name'))
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
         article = article.values('id', 'author__username', 'title', 'excerpt', 'image',
                                  'publish_date', 'slug')
@@ -121,7 +123,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                                                                article__slug=slug).aggregate(Avg('rating')),
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__slug=slug).count(),
-                        'tags': list(art.tags.values('name')),
+                        'tags': tags_list,
                         'paragraphs': paragr})
 
         try:
