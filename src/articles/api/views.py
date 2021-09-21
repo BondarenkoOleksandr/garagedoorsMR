@@ -90,7 +90,7 @@ class ArticleDetailView(RetrieveAPIView):
         except:
             article.first().update({'image': None})
 
-        data = article
+        data = list(article)
 
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
