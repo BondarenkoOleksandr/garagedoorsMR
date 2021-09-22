@@ -1,6 +1,6 @@
 from .base import *
 
-DEBUG = False
+DEBUG = True
 
 DATABASES = {
     'default': {
@@ -12,7 +12,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '185.233.117.122', 'garagedoors.fun', 'vps-38133.vps-default-host.net']
 
 MEDIA_ROOT = '/var/www/gdr_mr/media'
 STATIC_ROOT = '/var/www/gdr_mr/static'
