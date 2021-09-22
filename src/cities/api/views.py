@@ -27,7 +27,7 @@ class CitiesByStates(ListAPIView):
         for state in states:
             data.update({state.name: [city for city in City.objects.filter(state=state).values('name')]})
 
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
 
 class CityDetailView(RetrieveAPIView):
@@ -40,4 +40,4 @@ class CityDetailView(RetrieveAPIView):
                      'third_screen': model_to_dict(city.thirdscreen, exclude=['image'])})
 
         data = add_images_path(request, city, data)
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
