@@ -12,15 +12,15 @@ class ReviewListView(ListAPIView):
 
     def get(self, request, *args, **kwargs):
         reviews = Review.objects.all()
-        data = {}
+        data=[]
         for review in reviews:
-            model = model_to_dict(review, exclude=['id', 'logo', 'city', 'state'])
+            model = model_to_dict(review, exclude=['logo', 'city', 'state'])
             model.update({'logo': request.build_absolute_uri(review.logo.url)})
             model.update({'city': review.city.name})
             model.update({'state': review.state.name})
-            data.update({review.id: model})
+            data.append(model)
 
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
 
 class ReviewDetailView(RetrieveAPIView):
@@ -29,11 +29,9 @@ class ReviewDetailView(RetrieveAPIView):
 
     def get(self, request, id):
         review = Review.objects.get(id=id)
-        data = []
         model = model_to_dict(review, exclude=['logo', 'city', 'state'])
         model.update({'logo': request.build_absolute_uri(review.logo.url)})
         model.update({'city': review.city.name})
         model.update({'state': review.state.name})
-        data.append(model)
 
-        return JsonResponse(*data)
+        return JsonResponse(model, safe=False, json_dumps_params={'indent': 2})
