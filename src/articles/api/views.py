@@ -103,7 +103,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
             return JsonResponse(['Article not fount'], safe=False)
         tags_list = list(article.first().tags.values('name'))
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
-        article = article.values('id', 'author__username', 'title', 'excerpt', 'image',
+        article = article.values('id', 'author__firtsname', 'author__lastname', 'title', 'excerpt', 'image',
                                  'publish_date', 'slug')
 
         for art in article:
@@ -156,7 +156,7 @@ class ArticleByTagView(RetrieveAPIView):
         search_tags = self.request.GET.get('tags', '').split(',')
         articles_by_tag = Article.objects.filter(tags__name__in=search_tags).distinct()
         tags_list = [list(obj.tags.values('name')) for obj in articles_by_tag]
-        articles_by_tag = articles_by_tag.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date',
+        articles_by_tag = articles_by_tag.values('id', 'author__firtsname', 'author__lastname', 'title', 'excerpt', 'image', 'publish_date',
                                                  'slug')
         indx = 0
         for article in articles_by_tag:
