@@ -9,7 +9,7 @@ class Employee(models.Model):
     photo = models.ImageField(upload_to='employees/', null=True)
     position = models.CharField(max_length=100)
     type_of_works = models.TextField()
-    state = models.OneToOneField(to=State, on_delete=models.SET_NULL, null=True)
+    state = models.ForeignKey(to=State, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name + ' - ' + self.position
