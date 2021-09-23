@@ -23,9 +23,9 @@ class CitiesByStates(ListAPIView):
 
     def get(self, request, *args, **kwargs):
         states = State.objects.all()
-        data = {}
+        data = []
         for state in states:
-            data.update({state.name: [city for city in City.objects.filter(state=state).values('name')]})
+            data.append({state.name: [city for city in City.objects.filter(state=state).values('name')]})
 
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
