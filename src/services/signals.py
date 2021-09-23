@@ -9,7 +9,7 @@ from services.models import Service, ServiceCategory
 def save_lesson(sender, instance, created, **kwargs):
     if created:
         value = instance.name
-        instance.slug = slugify(value)
+        instance.slug = slugify(value) + '-' + instance.category.slug
         instance.save()
 
 

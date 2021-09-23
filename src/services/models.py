@@ -18,8 +18,8 @@ class Service(models.Model):
     excerpt = models.TextField(max_length=500)
 
     def clean(self):
-        if not self.slug and Service.objects.filter(name__iexact=self.name):
-            raise ValidationError('Service with this name already exists')
+        if not self.slug and Service.objects.filter(name__iexact=self.name, category=self.category):
+            raise ValidationError('Service with this name and category already exists')
 
     def __str__(self):
         return self.name + ' - ' + self.category.name
