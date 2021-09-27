@@ -21,7 +21,7 @@ class ArticleListView(ListAPIView):
 
     def get(self, request):
         articles = Article.objects.all()
-        tags_list = [list(article.tags.values('name')) for article in articles]
+        tags_list = [list(article.tags.values('name', 'slug')) for article in articles]
         articles = Article.objects.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date',
                                           'slug')
         indx = 0
