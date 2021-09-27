@@ -26,7 +26,7 @@ class EmployeeReviewCreateAPIView(CreateAPIView):
         rating = request.POST.get('rating', 5)
         review = model_to_dict(Review.objects.create(employee=employee, name=name, text=text, rating=rating))
 
-        return JsonResponse(review)
+        return JsonResponse(review, safe=False, json_dumps_params={'indent': 2})
 
 
 class EmployeeDetailView(RetrieveAPIView):
@@ -34,10 +34,13 @@ class EmployeeDetailView(RetrieveAPIView):
 
     def get(self, request, id):
         employee = Employee.objects.get(id=id)
+        reviews = Review.objects.filter(employee=employee)
+        reviews = [model_to_dict(review, fields=['name', 'text', 'rating']) for review in reviews]
         data = model_to_dict(employee, fields=['name', 'position', 'type_of_works'])
         data.update({'photo': request.build_absolute_uri(employee.photo.url)})
         data.update({'state': employee.state.name})
-        return JsonResponse(data)
+        data.update({'reviews': reviews})
+        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
 
 class EmployeeReviewList(ListAPIView):

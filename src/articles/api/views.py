@@ -1,7 +1,7 @@
 import json
 
 from django.db.models import Avg
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 from requests import Response
@@ -143,9 +143,12 @@ class ArticleRatingCreateView(CreateAPIView):
     queryset = ArticleRating.objects.all()
     serializer_class = ArticleRatingSerializer
 
-    def post(self, request, id):
-        article = Article.objects.get(id=id)
+    def post(self, request):
+        article_id = request.POST.get('article', '')
         rating = self.request.POST.get('rating', 5)
+        if not article_id or not rating:
+            return HttpResponseBadRequest('Mandatory data not transmitted', status=400)
+        article = get_object_or_404(Article, id=article_id)
         obj, created = ArticleRating.objects.get_or_create(IPAddress=get_user_ip(request), article=article)
         if obj:
             obj.rating = rating

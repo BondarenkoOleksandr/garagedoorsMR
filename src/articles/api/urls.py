@@ -12,5 +12,5 @@ urlpatterns = [
     path('articles/by_tags/', ArticleByTagView.as_view(), name='articles-by_tags'),
     path('tags/', TagsListView.as_view(), name='articles-list'),
     path('get_comments/<int:id>/', ArticleCommentListView.as_view(), name='article-get-comments'),
-    path('set_rating/<int:id>/', ArticleRatingCreateView.as_view(), name='article-set-rating'),
+    path('rating/', ArticleRatingCreateView.as_view(), name='article-set-rating'),
 ]
