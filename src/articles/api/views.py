@@ -48,6 +48,9 @@ class TagsListView(ListAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
+    def get_queryset(self):
+        return Tag.objects.values('name', 'slug')
+
 
 class ArticleCommentListView(ListAPIView):
     serializer_class = CommentSerializer
