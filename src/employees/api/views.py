@@ -3,7 +3,7 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.forms import model_to_dict
 from django.http import JsonResponse
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, get_object_or_404
 
 from employees.api.serializers import EmployeeSerializer, ReviewSerializer
 from employees.models import Employee, Review
@@ -33,7 +33,7 @@ class EmployeeDetailView(RetrieveAPIView):
     serializer_class = EmployeeSerializer
 
     def get(self, request, id):
-        employee = Employee.objects.get(id=id)
+        employee = get_object_or_404(Employee, id=id)
         reviews = Review.objects.filter(employee=employee)
         reviews = [model_to_dict(review, fields=['name', 'text', 'rating']) for review in reviews]
         data = model_to_dict(employee, fields=['name', 'position', 'type_of_works'])
