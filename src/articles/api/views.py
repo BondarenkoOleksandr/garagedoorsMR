@@ -156,8 +156,8 @@ class ArticleRatingCreateView(CreateAPIView):
 
 class ArticleByTagView(RetrieveAPIView):
     def get(self, request, *args, **kwargs):
-        search_tags = self.request.GET.get('tags', '').split(',')
-        articles_by_tag = Article.objects.filter(tags__name__in=search_tags).distinct()
+        search_tags = self.request.GET.get('tags', '').lower().split(',')
+        articles_by_tag = Article.objects.filter(tags__slug__in=search_tags).distinct()
         tags_list = [list(obj.tags.values('name', 'slug')) for obj in articles_by_tag]
         articles_by_tag = articles_by_tag.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date')
         indx = 0
