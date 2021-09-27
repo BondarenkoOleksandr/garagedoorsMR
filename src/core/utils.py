@@ -30,7 +30,6 @@ def add_images_path(request, model, data):
 
 
 def queryset_pagination(request, queryset):
-
     if not request.POST.get('per_page', False):
         return queryset
 
