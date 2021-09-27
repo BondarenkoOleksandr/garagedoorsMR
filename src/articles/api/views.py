@@ -12,7 +12,7 @@ from django.forms.models import model_to_dict
 from app.settings import base
 from articles.api.serializers import ArticleSerializer, TagSerializer, CommentSerializer, ArticleRatingSerializer
 from articles.models import Article, Comment, ArticleRating, ArticleView, Paragraphs
-from core.utils import get_user_ip
+from core.utils import get_user_ip, queryset_pagination
 
 
 class ArticleListView(ListAPIView):
@@ -20,7 +20,7 @@ class ArticleListView(ListAPIView):
     serializer_class = ArticleSerializer
 
     def get(self, request):
-        articles = Article.objects.all()
+        articles = queryset_pagination(request, Article.objects.all())
         tags_list = [list(article.tags.values('name', 'slug')) for article in articles]
         articles = Article.objects.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date',
                                           'slug')
@@ -57,14 +57,14 @@ class ArticleCommentListView(ListAPIView):
 
     def get_queryset(self, id):
         article_id = id
-        return Comment.objects.filter(article__id=article_id, status=1)
+        return queryset_pagination(self.request, Comment.objects.filter(article__id=article_id, status=1))
 
 
 class ArticleDetailView(RetrieveAPIView):
     serializer_class = ArticleSerializer
 
     def get(self, request, id):
-        article = Article.objects.filter(id=id)
+        article = queryset_pagination(self.request, Article.objects.filter(id=id))
         if not article:
             return JsonResponse(['Article not fount'], safe=False)
         tags_list = list(article.first().tags.values('name'))
@@ -101,7 +101,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
     serializer_class = ArticleSerializer
 
     def get(self, request, slug):
-        article = Article.objects.filter(slug=slug)
+        article = queryset_pagination(request, Article.objects.filter(slug=slug))
         if not article:
             return JsonResponse(['Article not fount'], safe=False)
         tags_list = list(article.first().tags.values('name', 'slug'))
@@ -160,7 +160,7 @@ class ArticleRatingCreateView(CreateAPIView):
 class ArticleByTagView(RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         search_tags = self.request.GET.get('tags', '').lower().split(',')
-        articles_by_tag = Article.objects.filter(tags__slug__in=search_tags).distinct()
+        articles_by_tag = queryset_pagination(request, Article.objects.filter(tags__slug__in=search_tags).distinct())
         tags_list = [list(obj.tags.values('name', 'slug')) for obj in articles_by_tag]
         articles_by_tag = articles_by_tag.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date')
         indx = 0
