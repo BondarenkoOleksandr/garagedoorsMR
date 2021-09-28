@@ -30,12 +30,12 @@ def add_images_path(request, model, data):
 
 
 def queryset_pagination(request, queryset):
-    if not request.POST.get('per_page', False):
+    if not request.GET.get('per_page', False):
         return queryset
 
     try:
-        page = int(request.POST.get('page', 0))
-        per_page = int(request.POST.get('per_page', 0))
+        page = int(request.GET.get('page', 0))
+        per_page = int(request.GET.get('per_page', 0))
     except:
         raise ValueError('Int value expected but str given')
 
