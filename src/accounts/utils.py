@@ -100,7 +100,7 @@ def facebook_get_user_info(*, access_token: str) -> Dict[str, Any]:
     response = requests.get(
         base.FACEBOOK_USER_FULL_INFO_URL + short_info.json()['id'],
         params={'access_token': access_token,
-                'fields': 'first_name,last_name,email'
+                'fields': 'first_name,last_name,picture,email'
                 }
     )
 
