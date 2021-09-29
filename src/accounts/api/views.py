@@ -49,3 +49,10 @@ class GoogleLoginApi(APIView):
         response = jwt_login(response=response, user=user)
 
         return response
+
+
+class FacebookLoginApi(APIView):
+
+    def get(self, request, *args, **kwargs):
+
+        pass

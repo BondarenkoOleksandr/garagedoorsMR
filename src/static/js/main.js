@@ -19,3 +19,19 @@ function sendReq(){
 
   window.location = `${googleAuthUrl}?${urlParams}`;
 };
+
+
+function sendReqFacebook(){
+  const facebookAuthUrl = 'https://www.facebook.com/v12.0/dialog/oauth';
+  const redirectUri = 'api/login/facebook/';
+
+  const params = {
+    response_type: 'code',
+    client_id: '1013078522871763',
+    redirect_uri: `http://localhost:8000/${redirectUri}`,
+    state: "{st=state123abc,ds=123456789}"
+  };
+  const urlParams = new URLSearchParams(params).toString();
+
+  window.location = `${facebookAuthUrl}?${urlParams}`;
+};
