@@ -23,7 +23,6 @@ django-oauth-toolkit==1.5.0
 django-quill-editor==0.1.22
 django-rest-auth==0.9.5
 django-rest-framework==0.1.0
-django-rest-framework-social-oauth2==1.1.0
 django-taggit==1.5.1
 django-templated-mail==1.1.1
 djangorestframework==3.12.4
@@ -62,8 +61,6 @@ requests==2.26.0
 requests-oauthlib==1.3.0
 rsa==4.7.2
 six==1.16.0
-social-auth-app-django==4.0.0
-social-auth-core==4.1.0
 soupsieve==2.2.1
 sqlparse==0.4.1
 traitlets==5.1.0
