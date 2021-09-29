@@ -10,7 +10,7 @@ function sendReq(){
   const params = {
     response_type: 'code',
     client_id: '486436967116-tiadudc1f9rmoj9c94rgp86q5ppks5pb.apps.googleusercontent.com',
-    redirect_uri: `http://localhost:8000/${redirectUri}`,
+    redirect_uri: `https://garagedoors.fun/${redirectUri}`,
     prompt: 'select_account',
     access_type: 'offline',
     scope
@@ -28,8 +28,9 @@ function sendReqFacebook(){
   const params = {
     response_type: 'code',
     client_id: '1013078522871763',
-    redirect_uri: `http://localhost:8000/${redirectUri}`,
-    state: "{st=state123abc,ds=123456789}"
+    redirect_uri: `https://garagedoors.fun/${redirectUri}`,
+    state: "{st=state123abc,ds=123456789}",
+    scope: 'email'
   };
   const urlParams = new URLSearchParams(params).toString();
 

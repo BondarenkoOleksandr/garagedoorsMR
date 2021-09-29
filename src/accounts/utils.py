@@ -74,7 +74,7 @@ def facebook_get_access_token(*, code: str, redirect_uri: str) -> str:
         'client_id': base.FACEBOOK_OAUTH2_CLIENT_ID,
         'client_secret': base.FACEBOOK_OAUTH2_CLIENT_SECRET,
         'redirect_uri': redirect_uri,
-        'grant_type': 'authorization_code'
+        'grant_type': 'authorization_code',
     }
 
     response = requests.post(base.FACEBOOK_ACCESS_TOKEN_OBTAIN_URL, data=data)
