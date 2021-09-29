@@ -42,9 +42,8 @@ class GoogleLoginApi(APIView):
         # We use get-or-create logic here for the sake of the example.
         # We don't have a sign-up flow.
         user, _ = User.objects.get_or_create(**profile_data)
-        user_profile = UserProfile.objects.get_or_create(user=user)
+        user_profile, _ = UserProfile.objects.get_or_create(user=user)
         save_avatar(user_profile, user_data)
-
 
         response = redirect(base.DOMAIN)
         response = jwt_login(response=response, user=user)

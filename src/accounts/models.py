@@ -14,3 +14,5 @@ class UserProfile(models.Model):
         image.thumbnail((300, 300), Image.ANTIALIAS)
         image.save(self.image.path)
 
+    def __str__(self):
+        return self.user.username
