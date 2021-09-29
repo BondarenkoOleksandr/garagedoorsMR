@@ -34,7 +34,7 @@ class CityDetailView(RetrieveAPIView):
 
     def get(self, request, id):
         city = City.objects.get(id=id)
-        data = model_to_dict(city, fields=['name'])
+        data = model_to_dict(city, fields=['name', 'description'])
         data.update({'state': city.state.name, 'first_screen': model_to_dict(city.firstscreen, exclude=['image']),
                      'second_screen': model_to_dict(city.secondscreen),
                      'third_screen': model_to_dict(city.thirdscreen, exclude=['image'])})
