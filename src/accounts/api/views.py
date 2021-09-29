@@ -91,5 +91,6 @@ class FacebookLoginApi(APIView):
 
         response = redirect(base.DOMAIN)
         response = jwt_login(response=response, user=user)
+        print(response.cookies['token'])
 
         return response
