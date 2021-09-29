@@ -22,7 +22,7 @@ class GoogleLoginApi(APIView):
             params = urlencode({'error': error})
             return redirect(f'{login_url}?{params}')
 
-        domain = 'http://localhost:8008'
+        domain = 'https://garagedoors.fun'
         api_uri = reverse('accounts_api:google-login')
         redirect_uri = f'{domain}{api_uri}'
 
@@ -41,7 +41,7 @@ class GoogleLoginApi(APIView):
         # We don't have a sign-up flow.
         user, _ = User.objects.get_or_create(**profile_data)
 
-        response = redirect('http://localhost:8008/')
+        response = redirect('https://garagedoors.fun/api/articles/')
         response = jwt_login(response=response, user=user)
 
         return response
