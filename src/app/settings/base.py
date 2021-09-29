@@ -161,3 +161,11 @@ GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v3/userinfo'
 
 GOOGLE_OAUTH2_CLIENT_ID = '486436967116-tiadudc1f9rmoj9c94rgp86q5ppks5pb.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = 'yH82Z0Lyi5RZfiP7uIVaBQg3'
+
+# Facebook configuration
+FACEBOOK_ID_TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
+FACEBOOK_ACCESS_TOKEN_OBTAIN_URL = 'https://graph.facebook.com/v12.0/oauth/access_token'
+FACEBOOK_USER_INFO_URL = 'https://graph.facebook.com/me'
+
+FACEBOOK_OAUTH2_CLIENT_ID = '486436967116-tiadudc1f9rmoj9c94rgp86q5ppks5pb.apps.googleusercontent.com'
+FACEBOOK_OAUTH2_CLIENT_SECRET = 'yH82Z0Lyi5RZfiP7uIVaBQg3'

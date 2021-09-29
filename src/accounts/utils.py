@@ -64,3 +64,36 @@ def save_avatar(profile, user_data):
     response = requests.get(user_data['picture'])
     profile.image.save(user_data['email'].split('@')[0] + str(random.randint(1, 1000000000)) + '.jpg', ImageFile(BytesIO(response.content)))
     profile.save()
+
+
+def facebook_get_access_token(*, code: str, redirect_uri: str) -> str:
+    # Reference: https://developers.google.com/identity/protocols/oauth2/web-server#obtainingaccesstokens
+    data = {
+        'code': code,
+        'client_id': base.FACEBOOK_OAUTH2_CLIENT_ID,
+        'client_secret': base.FACEBOOK_OAUTH2_CLIENT_SECRET,
+        'redirect_uri': redirect_uri,
+        'grant_type': 'authorization_code'
+    }
+
+    response = requests.post(base.FACEBOOK_ACCESS_TOKEN_OBTAIN_URL, data=data)
+
+    if not response.ok:
+        raise ValidationError('Failed to obtain access token from Facebook.')
+
+    access_token = response.json()['access_token']
+
+    return access_token
+
+
+def facebook_get_user_info(*, access_token: str) -> Dict[str, Any]:
+    # Reference: https://developers.google.com/identity/protocols/oauth2/web-server#callinganapi
+    response = requests.get(
+        base.FACEBOOK_USER_INFO_URL,
+        params={'access_token': access_token}
+    )
+
+    if not response.ok:
+        raise ValidationError('Failed to obtain user info from Facebook.')
+
+    return response.json()
