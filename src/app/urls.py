@@ -23,8 +23,7 @@ from app.views import index
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
-    path('articles/', include('articles.urls')),
-    # path('accounts/', include('accounts.urls')),
+    path('login/', include('accounts.urls')),
 ]
 
 urlpatterns += [
