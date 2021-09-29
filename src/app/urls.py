@@ -25,7 +25,6 @@ urlpatterns = [
     path('', index),
     path('articles/', include('articles.urls')),
     # path('accounts/', include('accounts.urls')),
-    path('auth/', include('rest_framework_social_oauth2.urls')),
 ]
 
 urlpatterns += [

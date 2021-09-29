@@ -1,3 +1,5 @@
+import datetime
+
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models.fields.files import ImageFieldFile
 from rest_framework.exceptions import ValidationError
@@ -20,6 +22,10 @@ def get_user_ip(request):
         ip = request.META.get('REMOTE_ADDR')
 
     return ip
+
+
+def get_now() -> datetime.datetime:
+    return datetime.timezone.now()
 
 
 def add_images_path(request, model, data):
