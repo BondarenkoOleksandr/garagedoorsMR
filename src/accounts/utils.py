@@ -61,7 +61,10 @@ def jwt_login(*, response: HttpResponse, user: User) -> HttpResponse:
 
 
 def save_avatar(profile, user_data):
-    response = requests.get(user_data['picture'])
+    try:
+        response = requests.get(user_data['picture'])
+    except:
+        response = requests.get(user_data['picture']['data']['url'])
     profile.image.save(user_data['email'].split('@')[0] + str(random.randint(1, 1000000000)) + '.jpg',
                        ImageFile(BytesIO(response.content)))
     profile.save()
