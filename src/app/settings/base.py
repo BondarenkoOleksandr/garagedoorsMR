@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    'django_quill',
     'rest_framework',
     'rest_framework.authtoken',
     'oauth2_provider',
