@@ -165,7 +165,8 @@ GOOGLE_OAUTH2_CLIENT_SECRET = 'yH82Z0Lyi5RZfiP7uIVaBQg3'
 # Facebook configuration
 FACEBOOK_ID_TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
 FACEBOOK_ACCESS_TOKEN_OBTAIN_URL = 'https://graph.facebook.com/v12.0/oauth/access_token'
-FACEBOOK_USER_INFO_URL = 'https://graph.facebook.com/me'
+FACEBOOK_USER_SHORT_INFO_URL = 'https://graph.facebook.com/me'
+FACEBOOK_USER_FULL_INFO_URL = 'https://graph.facebook.com/v12.0/'
 
 FACEBOOK_OAUTH2_CLIENT_ID = '1013078522871763'
 FACEBOOK_OAUTH2_CLIENT_SECRET = 'a8b1855ec7ed02d4d2602150ae6aaf1d'
