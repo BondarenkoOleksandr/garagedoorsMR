@@ -152,8 +152,8 @@ REST_USE_JWT = True
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Google configuration
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '486436967116-tiadudc1f9rmoj9c94rgp86q5ppks5pb.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'yH82Z0Lyi5RZfiP7uIVaBQg3'
+GOOGLE_OAUTH2_CLIENT_ID = '486436967116-tiadudc1f9rmoj9c94rgp86q5ppks5pb.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET = 'yH82Z0Lyi5RZfiP7uIVaBQg3'
 
 # Define SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE to get extra permissions from Google.
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
