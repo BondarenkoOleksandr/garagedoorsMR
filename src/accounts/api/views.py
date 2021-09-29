@@ -1,6 +1,7 @@
 from urllib.parse import urlencode
 
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from rest_framework.views import APIView
 
 from django.urls import reverse
@@ -55,4 +56,4 @@ class FacebookLoginApi(APIView):
 
     def get(self, request, *args, **kwargs):
 
-        pass
+        return JsonResponse(list(request.GET, safe=True)
