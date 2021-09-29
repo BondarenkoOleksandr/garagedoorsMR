@@ -56,4 +56,4 @@ class FacebookLoginApi(APIView):
 
     def get(self, request, *args, **kwargs):
 
-        return JsonResponse(list(request.GET, safe=True)
+        return JsonResponse(list(request.GET, safe=True))
