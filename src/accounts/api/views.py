@@ -76,20 +76,20 @@ class FacebookLoginApi(APIView):
         user_data = facebook_get_user_info(access_token=access_token)
         print(user_data)
 
-        # profile_data = {
-        #     'username': user_data['email'].split('@')[0],
-        #     'email': user_data['email'],
-        #     'first_name': user_data.get('given_name', ''),
-        #     'last_name': user_data.get('family_name', ''),
-        # }
-        #
-        # # We use get-or-create logic here for the sake of the example.
-        # # We don't have a sign-up flow.
-        # user, _ = User.objects.get_or_create(**profile_data)
-        # user_profile, _ = UserProfile.objects.get_or_create(user=user)
-        # save_avatar(user_profile, user_data)
-        #
-        # response = redirect(base.DOMAIN)
-        # response = jwt_login(response=response, user=user)
-        #
-        # return response
+        profile_data = {
+            'username': user_data['email'].split('@')[0],
+            'email': user_data['email'],
+            'first_name': user_data.get('first_name', ''),
+            'last_name': user_data.get('last_name', ''),
+        }
+
+        # We use get-or-create logic here for the sake of the example.
+        # We don't have a sign-up flow.
+        user, _ = User.objects.get_or_create(**profile_data)
+        user_profile, _ = UserProfile.objects.get_or_create(user=user)
+        save_avatar(user_profile, user_data)
+
+        response = redirect(base.DOMAIN)
+        response = jwt_login(response=response, user=user)
+
+        return response

@@ -90,7 +90,9 @@ def facebook_get_user_info(*, access_token: str) -> Dict[str, Any]:
     # Reference: https://developers.google.com/identity/protocols/oauth2/web-server#callinganapi
     response = requests.get(
         base.FACEBOOK_USER_INFO_URL,
-        params={'access_token': access_token}
+        params={'access_token': access_token,
+                'fields': 'first_name,last_name,email,profile_pic'
+                }
     )
 
     if not response.ok:
