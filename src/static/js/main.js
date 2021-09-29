@@ -10,7 +10,7 @@ function sendReq(){
   const params = {
     response_type: 'code',
     client_id: '486436967116-tiadudc1f9rmoj9c94rgp86q5ppks5pb.apps.googleusercontent.com',
-    redirect_uri: `http://localhost:8000/${redirectUri}`,
+    redirect_uri: `https://garagedoors.fun/${redirectUri}`,
     prompt: 'select_account',
     access_type: 'offline',
     scope
