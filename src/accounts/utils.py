@@ -98,7 +98,7 @@ def facebook_get_user_info(*, access_token: str) -> Dict[str, Any]:
         raise ValidationError('Failed to obtain user info from Facebook.')
 
     response = requests.get(
-        base.FACEBOOK_USER_FULL_INFO_URL + short_info.GET.get('id', ''),
+        base.FACEBOOK_USER_FULL_INFO_URL + short_info.json()['id'],
         params={'access_token': access_token,
                 'fields': 'first_name,last_name,email,profile_pic'
                 }
