@@ -1,8 +1,11 @@
+import random
+from io import BytesIO
 from typing import Dict, Any
 
 import requests
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.files.images import ImageFile
 from django.http import HttpResponse
 from rest_framework_jwt.settings import api_settings
 
@@ -55,3 +58,9 @@ def jwt_login(*, response: HttpResponse, user: User) -> HttpResponse:
     user_record_login(user=user)
 
     return response
+
+
+def save_avatar(profile, user_data):
+    response = requests.get(user_data['picture'])
+    profile.image.save(user_data['email'].split('@')[0] + str(random.randint(1, 1000000000)) + '.jpg', ImageFile(BytesIO(response.content)))
+    profile.save()

@@ -151,6 +151,9 @@ REST_USE_JWT = True
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+DOMAIN = 'http://localhost:8000'
+
+
 # Google configuration
 GOOGLE_ID_TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
 GOOGLE_ACCESS_TOKEN_OBTAIN_URL = 'https://oauth2.googleapis.com/token'

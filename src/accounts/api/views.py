@@ -6,7 +6,9 @@ from rest_framework.views import APIView
 from django.urls import reverse
 from django.shortcuts import redirect
 
-from accounts.utils import google_get_access_token, google_get_user_info, jwt_login
+from accounts.models import UserProfile
+from accounts.utils import google_get_access_token, google_get_user_info, jwt_login, save_avatar
+from app.settings import base
 
 
 class GoogleLoginApi(APIView):
@@ -16,13 +18,13 @@ class GoogleLoginApi(APIView):
         code = request.GET.get('code')
         error = request.GET.get('error')
 
-        login_url = f'https://garagedoors.fun/login'
+        login_url = base.DOMAIN + '/login'
 
         if error or not code:
             params = urlencode({'error': error})
             return redirect(f'{login_url}?{params}')
 
-        domain = 'https://garagedoors.fun'
+        domain = base.DOMAIN
         api_uri = reverse('accounts_api:google-login')
         redirect_uri = f'{domain}{api_uri}'
 
@@ -40,8 +42,11 @@ class GoogleLoginApi(APIView):
         # We use get-or-create logic here for the sake of the example.
         # We don't have a sign-up flow.
         user, _ = User.objects.get_or_create(**profile_data)
+        user_profile = UserProfile.objects.get_or_create(user=user)
+        save_avatar(user_profile, user_data)
 
-        response = redirect('https://garagedoors.fun/')
+
+        response = redirect(base.DOMAIN)
         response = jwt_login(response=response, user=user)
 
         return response
