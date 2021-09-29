@@ -74,7 +74,7 @@ class FacebookLoginApi(APIView):
         print(access_token)
 
         user_data = facebook_get_user_info(access_token=access_token)
-        print('USER DATA = '+user_data)
+        print(user_data)
 
         # profile_data = {
         #     'username': user_data['email'].split('@')[0],
