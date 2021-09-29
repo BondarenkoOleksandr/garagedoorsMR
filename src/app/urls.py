@@ -37,6 +37,7 @@ urlpatterns += [
     path('api/', include('reviews.api.urls')),
     path('api/', include('faq.api.urls')),
     path('api/', include('coupons.api.urls')),
+    path('api/', include('accounts.api.urls')),
 ]
 
 urlpatterns += \
