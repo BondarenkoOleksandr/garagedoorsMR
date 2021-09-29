@@ -152,11 +152,9 @@ REST_USE_JWT = True
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Google configuration
+GOOGLE_ID_TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
+GOOGLE_ACCESS_TOKEN_OBTAIN_URL = 'https://oauth2.googleapis.com/token'
+GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v3/userinfo'
+
 GOOGLE_OAUTH2_CLIENT_ID = '486436967116-tiadudc1f9rmoj9c94rgp86q5ppks5pb.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = 'yH82Z0Lyi5RZfiP7uIVaBQg3'
-
-# Define SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE to get extra permissions from Google.
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    'https://www.googleapis.com/auth/userinfo.email',
-    'https://www.googleapis.com/auth/userinfo.profile',
-]
