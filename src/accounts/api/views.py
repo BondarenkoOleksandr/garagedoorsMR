@@ -55,5 +55,5 @@ class GoogleLoginApi(APIView):
 class FacebookLoginApi(APIView):
 
     def get(self, request, *args, **kwargs):
-
+        print(request.GET)
         return JsonResponse(list(request.GET, safe=True))
