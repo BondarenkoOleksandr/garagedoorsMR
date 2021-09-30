@@ -1,3 +1,6 @@
+import uuid
+
+from django.core.exceptions import ValidationError
 from django.db import models
 
 # Create your models here.
@@ -9,6 +12,16 @@ class City(models.Model):
     name = models.CharField(max_length=150, null=True)
     description = models.TextField(null=True)
     zip = models.IntegerField(null=True)
+    slug = models.SlugField(
+        max_length=150,
+        default=uuid.uuid1,
+        editable=False,
+        unique=True,
+    )
+
+    def clean(self):
+        if not self.slug and City.objects.filter(name__iexact=self.name):
+            raise ValidationError('City with this title already exists')
 
     class Meta:
         verbose_name_plural = "Cities"

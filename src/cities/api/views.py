@@ -5,7 +5,7 @@ from django.core import serializers
 
 from cities.api.serializers import CitySerializer
 from cities.models import City
-from core.utils import add_images_path
+from core.utils import add_images_path, queryset_pagination
 from states.models import State
 
 
@@ -23,17 +23,18 @@ class CitiesByStates(ListAPIView):
 
     def get(self, request, *args, **kwargs):
         states = State.objects.all()
+        states = queryset_pagination(request, states)
         data = []
         for state in states:
-            data.append({state.name: [city for city in City.objects.filter(state=state).values('id', 'name')]})
+            data.append({state.name: [city for city in queryset_pagination(City.objects.filter(state=state).values('id', 'name', 'slug'))]})
 
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
 
 class CityDetailView(RetrieveAPIView):
 
-    def get(self, request, id):
-        city = City.objects.get(id=id)
+    def get(self, request, slug):
+        city = City.objects.get(slug=slug)
         data = model_to_dict(city, fields=['name', 'description'])
         data.update({'state': city.state.name, 'first_screen': model_to_dict(city.firstscreen, exclude=['image']),
                      'second_screen': model_to_dict(city.secondscreen),

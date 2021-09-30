@@ -47,11 +47,11 @@ INSTALLED_APPS = [
     'taggit',
 
     'articles',
-    'cities',
     'employees',
     'services',
     'reviews',
     'states',
+    'cities',
     'faq',
     'accounts',
     'coupons',

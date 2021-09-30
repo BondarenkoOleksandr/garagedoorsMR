@@ -6,5 +6,5 @@ app_name = 'cities_api'
 
 urlpatterns = [
     path('cities/', CitiesByStates.as_view(), name='cities-list'),
-    path('cities/<int:id>/', CityDetailView.as_view(), name='city-detail')
+    path('cities/<slug:slug>/', CityDetailView.as_view(), name='city-detail')
 ]

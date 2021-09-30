@@ -14,9 +14,9 @@ class StateListView(ListAPIView):
 
 class StateDetailView(ListAPIView):
 
-    def get(self, request, id):
-        state = State.objects.get(id=id)
-        data = model_to_dict(state, fields=['name'])
+    def get(self, request, slug):
+        state = State.objects.get(slug=slug)
+        data = model_to_dict(state, fields=['name', 'slug'])
         data.update({'first_screen': model_to_dict(state.firstscreen, exclude=['image', 'state']),
                      'second_screen': model_to_dict(state.secondscreen, exclude=['state']),
                      'third_screen': model_to_dict(state.thirdscreen, exclude=['image', 'state'])})

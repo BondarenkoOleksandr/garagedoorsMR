@@ -1,3 +1,6 @@
+import uuid
+
+from django.core.exceptions import ValidationError
 from django.db import models
 
 # Create your models here.
@@ -6,9 +9,19 @@ from django.db import models
 class State(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True)
+    slug = models.SlugField(
+        max_length=150,
+        default=uuid.uuid1,
+        editable=False,
+        unique=True,
+    )
 
     def __str__(self):
         return self.name
+
+    def clean(self):
+        if not self.slug and State.objects.filter(name__iexact=self.name):
+            raise ValidationError('State with this title already exists')
 
 
 class FirstScreen(models.Model):
