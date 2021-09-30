@@ -27,6 +27,7 @@ class ArticleListView(ListAPIView):
         articles = queryset_pagination(request, articles)
         indx = 0
         for article in articles:
+            print(article['publish_date'])
             article.update({'comments_count': Comment.objects.filter(article__id=article['id'], status=1).count(),
                             'views_count': ArticleView.objects.filter(IPAddress=get_user_ip(request),
                                                                       article__id=article['id']).count(),
