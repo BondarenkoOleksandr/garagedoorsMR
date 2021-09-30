@@ -16,7 +16,6 @@ class City(models.Model):
         max_length=150,
         default=str(uuid.uuid1) + str(uuid.uuid3),
         editable=False,
-        unique=True,
     )
 
     def clean(self):
