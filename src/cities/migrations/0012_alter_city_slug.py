@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cities', '0010_city_zip'),
+        ('cities', '0011_city_slug'),
     ]
 
     operations = [
-        migrations.AddField(
+        migrations.AlterField(
             model_name='city',
             name='slug',
-            field=models.SlugField(default='<function uuid1 at 0x0000024ACFF991F0><function uuid3 at 0x0000024ACFF99280>', editable=False, max_length=150),
+            field=models.SlugField(default='<function uuid1 at 0x000002538F6E91F0><function uuid3 at 0x000002538F6E9280>', editable=False, max_length=150),
         ),
     ]

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('states', '0007_alter_thirdscreen_image'),
+        ('states', '0009_alter_state_slug'),
     ]
 
     operations = [
-        migrations.AddField(
+        migrations.AlterField(
             model_name='state',
             name='slug',
-            field=models.SlugField(default='<function uuid1 at 0x0000024ACFF991F0><function uuid3 at 0x0000024ACFF99280>', editable=False, max_length=150),
+            field=models.SlugField(default='<function uuid1 at 0x00000287024091F0><function uuid3 at 0x0000028702409280>', editable=False, max_length=150),
         ),
     ]
