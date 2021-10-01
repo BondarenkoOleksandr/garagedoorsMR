@@ -101,9 +101,10 @@ class GetMeApi(APIView):
         user = get_user_by_jwt(request)
 
         if isinstance(user, User):
-            user = UserProfile(user=user)
+            user = UserProfile.objects.filter(user=user)
+            user = user.values('user__username', 'user__first_name', 'user__last_name', 'avatar')
 
-            return JsonResponse(model_to_dict(user), safe=False)
+            return JsonResponse(user, safe=False)
 
         else:
             return JsonResponse(user[0], status=400, safe=False)
