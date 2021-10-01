@@ -1,6 +1,7 @@
 from urllib.parse import urlencode
 
 from django.contrib.auth.models import User
+from django.forms import model_to_dict
 from django.http import JsonResponse
 from rest_framework.views import APIView
 
@@ -101,7 +102,7 @@ class GetMeApi(APIView):
 
         if isinstance(user, User):
 
-            return JsonResponse(list(user), safe=False)
+            return JsonResponse(model_to_dict(user), safe=False)
 
         else:
             return JsonResponse(user[0], status=400, safe=False)
