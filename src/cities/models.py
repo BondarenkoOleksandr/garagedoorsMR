@@ -13,6 +13,7 @@ class City(models.Model):
     description = models.TextField(null=True)
     zip = models.IntegerField(null=True)
     is_main = models.BooleanField(default=False)
+    is_menu = models.BooleanField(default=False)
     slug = models.SlugField(
         max_length=150,
         editable=False,
