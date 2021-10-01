@@ -6,6 +6,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models.fields.files import ImageFieldFile
 from rest_framework.exceptions import ValidationError
 from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
+from autoslug.utils import slugify
 
 
 class ExtendedEncoder(DjangoJSONEncoder):
@@ -69,3 +70,10 @@ def get_user_by_jwt(request):
     except ValidationError as v:
         print("validation error", v)
         return v.args
+
+
+def change_slug(models):
+    for model in models:
+        name = model.name
+        model.slug = slugify(name)
+        model.save()

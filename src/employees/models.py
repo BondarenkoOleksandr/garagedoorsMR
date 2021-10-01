@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 # Create your models here.
@@ -10,6 +12,12 @@ class Employee(models.Model):
     position = models.CharField(max_length=100)
     type_of_works = models.TextField()
     state = models.ForeignKey(to=State, on_delete=models.SET_NULL, null=True)
+    slug = models.SlugField(
+        max_length=100,
+        editable=False,
+        default=uuid.uuid3,
+        unique=True,
+    )
 
     def __str__(self):
         return self.name + ' - ' + self.position
