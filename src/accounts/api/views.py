@@ -102,7 +102,9 @@ class GetMeApi(APIView):
 
         if isinstance(user, User):
             user = UserProfile.objects.filter(user=user)
+            print(user)
             user = user.values('user__username', 'user__first_name', 'user__last_name', 'image')
+            print(user)
             for usr in user:
                 usr.update(
                     {
