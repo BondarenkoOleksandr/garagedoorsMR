@@ -113,7 +113,7 @@ class GetMeApi(APIView):
 
             data = list(user)
 
-            return JsonResponse(data, safe=False)
+            return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
         else:
             return JsonResponse(user[0], status=400, safe=False)
