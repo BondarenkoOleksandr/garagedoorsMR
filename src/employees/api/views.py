@@ -36,11 +36,13 @@ class EmployeeDetailView(RetrieveAPIView):
     def get(self, request, id):
         employee = get_object_or_404(Employee, id=id)
         reviews = Review.objects.filter(employee=employee)
-        reviews = [model_to_dict(review, fields=['name', 'text', 'rating']) for review in reviews]
+        reviews_list = []
+        for review in reviews:
+            reviews_list.append(model_to_dict(review, fields=['name', 'text', 'rating']))
         data = model_to_dict(employee, fields=['name', 'position', 'type_of_works', 'slug'])
         data.update({'photo': request.build_absolute_uri(employee.photo.url)})
         data.update({'state': employee.state.name})
-        data.update({'reviews': reviews})
+        data.update({'reviews': reviews_list})
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
 
