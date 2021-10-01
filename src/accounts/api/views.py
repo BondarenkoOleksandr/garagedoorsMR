@@ -103,11 +103,15 @@ class GetMeApi(APIView):
         if isinstance(user, User):
             user = UserProfile.objects.filter(user=user)
             user = user.values('user__username', 'user__first_name', 'user__last_name', 'image')
-            image = request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + user.first()['image']
-            user = model_to_dict(user.first(), fields=['user__username', 'user__first_name', 'user__last_name'])
-            user.update({'image': image})
+            for usr in user:
+                usr.update(
+                    {
+                     'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + usr['image'],
+                     })
 
-            return JsonResponse(user, safe=False)
+            data = list(user)
+
+            return JsonResponse(data, safe=False)
 
         else:
             return JsonResponse(user[0], status=400, safe=False)
