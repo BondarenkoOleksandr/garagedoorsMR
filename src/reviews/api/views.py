@@ -18,6 +18,8 @@ class ReviewListView(ListAPIView):
             model.update({'logo': request.build_absolute_uri(review.logo.url)})
             model.update({'city': review.city.name})
             model.update({'state': review.state.name})
+            if review.date:
+                model.update({'publish_date': review.date.strftime("%d %b %Y - %Ih%Mm%S %p")})
             data.append(model)
 
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
@@ -33,5 +35,7 @@ class ReviewDetailView(RetrieveAPIView):
         model.update({'logo': request.build_absolute_uri(review.logo.url)})
         model.update({'city': review.city.name})
         model.update({'state': review.state.name})
+        if review.date:
+            model.update({'publish_date': review.date.strftime("%d %b %Y - %Ih%Mm%S %p")})
 
         return JsonResponse(model, safe=False, json_dumps_params={'indent': 2})
