@@ -27,7 +27,7 @@ class CitiesByStates(ListAPIView):
         data = []
         for state in states:
             data.append({state.name: [city for city in queryset_pagination(request, City.objects.filter(
-                state=state).values('id', 'name', 'slug', 'is_main'))]})
+                state=state).values('id', 'name', 'slug', 'is_main', 'is_menu'))]})
 
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
@@ -36,7 +36,7 @@ class CityDetailView(RetrieveAPIView):
 
     def get(self, request, slug):
         city = City.objects.get(slug=slug)
-        data = model_to_dict(city, fields=['name', 'description'])
+        data = model_to_dict(city, fields=['name', 'description', 'slug', 'is_main', 'is_menu'])
         data.update({'state': city.state.name, 'first_screen': model_to_dict(city.firstscreen, exclude=['image']),
                      'second_screen': model_to_dict(city.secondscreen),
                      'third_screen': model_to_dict(city.thirdscreen, exclude=['image'])})
