@@ -12,7 +12,7 @@ class ReviewListView(ListAPIView):
 
     def get(self, request, *args, **kwargs):
         reviews = Review.objects.all()
-        data=[]
+        data = []
         for review in reviews:
             model = model_to_dict(review, exclude=['logo', 'city', 'state'])
             model.update({'logo': request.build_absolute_uri(review.logo.url)})
