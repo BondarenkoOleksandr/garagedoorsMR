@@ -26,7 +26,8 @@ class CitiesByStates(ListAPIView):
         states = queryset_pagination(request, states)
         data = []
         for state in states:
-            data.append({state.name: [city for city in queryset_pagination(request, City.objects.filter(state=state).values('id', 'name', 'slug'))]})
+            data.append({state.name: [city for city in queryset_pagination(request, City.objects.filter(
+                state=state).values('id', 'name', 'slug', 'is_main'))]})
 
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
