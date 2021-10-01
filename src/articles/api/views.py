@@ -181,6 +181,7 @@ class ArticleByTagView(RetrieveAPIView):
                  'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                              article__id=article['id']).count(),
                  'tags': tags_list[indx],
+                 'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article['image'],
                  })
             indx += 1
 
