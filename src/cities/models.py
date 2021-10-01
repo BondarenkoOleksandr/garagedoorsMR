@@ -12,7 +12,7 @@ class City(models.Model):
     name = models.CharField(max_length=150, null=True)
     description = models.TextField(null=True)
     zip = models.IntegerField(null=True)
-    is_main = models.BooleanField(default=False, auto_now=True)
+    is_main = models.BooleanField(default=False)
     slug = models.SlugField(
         max_length=150,
         editable=False,
