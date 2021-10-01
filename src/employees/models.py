@@ -12,11 +12,6 @@ class Employee(models.Model):
     position = models.CharField(max_length=100)
     type_of_works = models.TextField()
     state = models.ForeignKey(to=State, on_delete=models.SET_NULL, null=True)
-    slug = models.SlugField(
-        max_length=150,
-        editable=False,
-        default=uuid.uuid1
-    )
     def __str__(self):
         return self.name + ' - ' + self.position
 
