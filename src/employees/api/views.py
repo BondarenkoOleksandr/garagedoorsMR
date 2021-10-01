@@ -37,8 +37,11 @@ class EmployeeDetailView(RetrieveAPIView):
         employee = get_object_or_404(Employee, id=id)
         reviews = Review.objects.filter(employee=employee)
         reviews_list = []
+        indx = 0
         for review in reviews:
             reviews_list.append(model_to_dict(review, fields=['name', 'text', 'rating']))
+            reviews_list[indx].update({'publish_date': review.pub_date.strftime("%d %b %Y - %Ih%Mm%S %p")})
+            indx += 1
         data = model_to_dict(employee, fields=['name', 'position', 'type_of_works', 'slug'])
         data.update({'photo': request.build_absolute_uri(employee.photo.url)})
         data.update({'state': employee.state.name})
