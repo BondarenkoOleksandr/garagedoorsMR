@@ -15,7 +15,7 @@ class Employee(models.Model):
     slug = models.SlugField(
         max_length=100,
         editable=False,
-        default=uuid.uuid3,
+        default=uuid.uuid4,
         unique=True,
     )
 

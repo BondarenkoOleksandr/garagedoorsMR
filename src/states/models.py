@@ -11,7 +11,7 @@ class State(models.Model):
     description = models.TextField(null=True)
     slug = models.SlugField(
         max_length=150,
-        default=uuid.uuid3,
+        default=uuid.uuid4,
         editable=False,
         unique=True,
     )
