@@ -102,7 +102,9 @@ class GetMeApi(APIView):
 
         if isinstance(user, User):
             user = UserProfile.objects.filter(user=user)
-            user = user.values('user__username', 'user__first_name', 'user__last_name', 'avatar')
+            user = user.values('user__username', 'user__first_name', 'user__last_name', 'image')
+            user.first()
+            user = model_to_dict(user.first())
 
             return JsonResponse(user, safe=False)
 
