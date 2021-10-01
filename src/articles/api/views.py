@@ -1,6 +1,7 @@
 import datetime
 import json
 
+from django.contrib.auth.models import User
 from django.db.models import Avg
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.core import serializers
@@ -13,7 +14,7 @@ from django.forms.models import model_to_dict
 from app.settings import base
 from articles.api.serializers import ArticleSerializer, TagSerializer, CommentSerializer, ArticleRatingSerializer
 from articles.models import Article, Comment, ArticleRating, ArticleView, Paragraphs
-from core.utils import get_user_ip, queryset_pagination
+from core.utils import get_user_ip, queryset_pagination, get_user_by_jwt
 
 
 class ArticleListView(ListAPIView):
@@ -188,3 +189,32 @@ class ArticleByTagView(RetrieveAPIView):
         data = list(articles_by_tag)
 
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
+
+
+class CreateCommentAPI(CreateAPIView):
+
+    def post(self, request, *args, **kwargs):
+        article_id = request.data.get('article', '')
+        text = request.data.get('text', '')
+        parent = request.data.get('parent', '')
+
+        user = get_user_by_jwt(request)
+        article = get_object_or_404(Article, id=article_id)
+
+        if isinstance(user, User):
+
+            comment = Comment.objects.create(
+                user=user,
+                article=article,
+                text=text,
+            )
+
+            if parent:
+                parent = get_object_or_404(Comment, id=parent)
+                comment.parent = parent
+                comment.save()
+
+            return JsonResponse({'status': 1})
+
+        else:
+            return JsonResponse(user[0], status=400, safe=False)

@@ -11,12 +11,12 @@ from accounts.models import UserProfile
 from accounts.utils import google_get_access_token, google_get_user_info, jwt_login, save_avatar, \
     facebook_get_access_token, facebook_get_user_info
 from app.settings import base
+from core.utils import get_user_by_jwt
 
 
 class GoogleLoginApi(APIView):
 
     def get(self, request, *args, **kwargs):
-
         code = request.GET.get('code')
         error = request.GET.get('error')
 
@@ -56,7 +56,6 @@ class GoogleLoginApi(APIView):
 class FacebookLoginApi(APIView):
 
     def get(self, request, *args, **kwargs):
-
         code = request.GET.get('code')
         error = request.GET.get('error')
 
@@ -94,3 +93,15 @@ class FacebookLoginApi(APIView):
         print(response.cookies['token'])
 
         return response
+
+
+class GetMeApi(APIView):
+    def get(self, request, *args, **kwargs):
+        user = get_user_by_jwt(request)
+
+        if isinstance(user, User):
+
+            return JsonResponse(list(user), safe=False)
+
+        else:
+            return JsonResponse(user[0], status=400, safe=False)
