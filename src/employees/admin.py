@@ -10,6 +10,7 @@ class EmployeeInlines(admin.TabularInline):
 
 class EmployeeAdmin(admin.ModelAdmin):
     inlines = (EmployeeInlines,)
+    search_fields = ['name']
 
 
 admin.site.register(Employee, EmployeeAdmin)

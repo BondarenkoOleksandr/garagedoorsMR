@@ -9,6 +9,7 @@ class ArticleInlines(admin.TabularInline):
 
 class ArticleAdmin(admin.ModelAdmin):
     inlines = (ArticleInlines,)
+    search_fields = ['title']
 
 
 admin.site.register(Article, ArticleAdmin)

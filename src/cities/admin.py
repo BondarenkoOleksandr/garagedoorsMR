@@ -18,6 +18,7 @@ class ThirdScreenInlines(admin.TabularInline):
 
 class RegionModelAdmin(admin.ModelAdmin):
     inlines = (FirstScreenInlines, SecondScreenInlines, ThirdScreenInlines)
+    search_fields = ['name']
 
 
 admin.site.register(City, RegionModelAdmin)
