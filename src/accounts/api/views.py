@@ -113,7 +113,7 @@ class GetMeApi(APIView):
 
             data = list(user)
 
-            return JsonResponse(user, safe=False)
+            return JsonResponse(data, safe=False)
 
         else:
             return JsonResponse(user[0], status=400, safe=False)
