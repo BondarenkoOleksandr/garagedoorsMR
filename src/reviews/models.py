@@ -12,6 +12,7 @@ class Review(models.Model):
     city = models.ForeignKey(to=City, on_delete=models.SET_NULL, null=True)
     state = models.ForeignKey(to=State, on_delete=models.SET_NULL, null=True)
     text = models.TextField()
+    date = models.DateField()
 
     def __str__(self):
         return self.name

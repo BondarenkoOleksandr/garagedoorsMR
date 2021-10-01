@@ -26,6 +26,7 @@ class ArticleListView(ListAPIView):
         tags_list = [list(article.tags.values('name', 'slug')) for article in articles]
         articles = Article.objects.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date',
                                           'slug')
+
         articles = queryset_pagination(request, articles)
         indx = 0
         for article in articles:
@@ -40,6 +41,8 @@ class ArticleListView(ListAPIView):
                             'tags': tags_list[indx],
                             'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article['image'],
                             })
+            if article['publish_date']:
+                article.update({'publish_date': article['publish_date'].strftime("%d %b %Y - %Ih%Mm%S %p")})
             indx += 1
 
         data = list(articles)
@@ -96,6 +99,8 @@ class ArticleDetailView(RetrieveAPIView):
                         'tags': tags_list,
                         'image': request.scheme + '://' + request.get_host()+ '/' + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr})
+            if art['publish_date']:
+                art.update({'publish_date': art['publish_date'].strftime("%d %b %Y - %Ih%Mm%S %p")})
 
         data = list(article)
 
@@ -134,6 +139,10 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                         'tags': tags_list,
                         'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr})
+
+            if art['publish_date']:
+                art.update({'publish_date': art['publish_date'].strftime("%d %b %Y - %Ih%Mm%S %p")})
+
 
         try:
             article.first().update({'image': request.get_host() + base.MEDIA_URL + art['image']})
@@ -184,6 +193,10 @@ class ArticleByTagView(RetrieveAPIView):
                  'tags': tags_list[indx],
                  'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article['image'],
                  })
+
+            if article['publish_date']:
+                article.update({'publish_date': article['publish_date'].strftime("%d %b %Y - %Ih%Mm%S %p")})
+
             indx += 1
 
         data = list(articles_by_tag)
