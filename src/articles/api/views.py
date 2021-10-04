@@ -23,7 +23,6 @@ class ArticleListView(ListAPIView):
 
     def get(self, request):
         articles = Article.objects.all()
-        tags_list = [list(article.tags.values('name', 'slug')) for article in articles]
         articles = Article.objects.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date',
                                           'slug')
 
@@ -38,7 +37,6 @@ class ArticleListView(ListAPIView):
                                 Avg('rating')),
                             'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                         article__id=article['id']).count(),
-                            'tags': tags_list[indx],
                             'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article['image'],
                             })
             if article['publish_date']:
@@ -114,7 +112,6 @@ class ArticleDetailBySlugView(RetrieveAPIView):
         article = Article.objects.filter(slug=slug)
         if not article:
             return JsonResponse(['Article not fount'], safe=False)
-        tags_list = list(article.first().tags.values('name', 'slug'))
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
         article = article.values('id', 'author__username', 'title', 'excerpt', 'image',
                                  'publish_date', 'slug')
@@ -136,7 +133,6 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                                                                article__slug=slug).aggregate(Avg('rating')),
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__slug=slug).count(),
-                        'tags': tags_list,
                         'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr})
 
