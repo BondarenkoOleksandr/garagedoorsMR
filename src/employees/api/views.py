@@ -33,8 +33,8 @@ class EmployeeReviewCreateAPIView(CreateAPIView):
 class EmployeeDetailView(RetrieveAPIView):
     serializer_class = EmployeeSerializer
 
-    def get(self, request, id):
-        employee = get_object_or_404(Employee, id=id)
+    def get(self, request, slug):
+        employee = get_object_or_404(Employee, slug=slug)
         reviews = Review.objects.filter(employee=employee)
         reviews_list = []
         indx = 0
