@@ -110,6 +110,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
 
     def get(self, request, slug):
         article = Article.objects.filter(slug=slug)
+        tags_list = list(article.first().tags.values('name'))
         if not article:
             return JsonResponse(['Article not fount'], safe=False)
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
@@ -133,6 +134,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                                                                article__slug=slug).aggregate(Avg('rating')),
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__slug=slug).count(),
+                        'tags': tags_list,
                         'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr})
 
