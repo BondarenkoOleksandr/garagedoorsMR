@@ -40,7 +40,7 @@ class ArticleListView(ListAPIView):
                             'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article['image'],
                             })
             if article['publish_date']:
-                article.update({'publish_date': article['publish_date'].strftime("%d %b %Y - %Ih%Mm%S %p")})
+                article.update({'publish_date': article['publish_date'].strftime("%d %b %Y")})
             indx += 1
 
         data = list(articles)
@@ -98,7 +98,7 @@ class ArticleDetailView(RetrieveAPIView):
                         'image': request.scheme + '://' + request.get_host()+ '/' + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr})
             if art['publish_date']:
-                art.update({'publish_date': art['publish_date'].strftime("%d %b %Y - %Ih%Mm%S %p")})
+                art.update({'publish_date': art['publish_date'].strftime("%d %b %Y")})
 
         data = list(article)
 
@@ -137,7 +137,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                         'paragraphs': paragr})
 
             if art['publish_date']:
-                art.update({'publish_date': art['publish_date'].strftime("%d %b %Y - %Ih%Mm%S %p")})
+                art.update({'publish_date': art['publish_date'].strftime("%d %b %Y")})
 
 
         try:
@@ -191,7 +191,7 @@ class ArticleByTagView(RetrieveAPIView):
                  })
 
             if article['publish_date']:
-                article.update({'publish_date': article['publish_date'].strftime("%d %b %Y - %Ih%Mm%S %p")})
+                article.update({'publish_date': article['publish_date'].strftime("%d %b %Y")})
 
             indx += 1
 
