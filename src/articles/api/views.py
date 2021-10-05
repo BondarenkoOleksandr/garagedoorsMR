@@ -110,7 +110,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
 
     def get(self, request, slug):
         article = Article.objects.filter(slug=slug)
-        tags_list = list(article.first().tags.values('name'))
+        tags_list = list(article.first().tags.values('name', 'slug'))
         if not article:
             return JsonResponse(['Article not fount'], safe=False)
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
