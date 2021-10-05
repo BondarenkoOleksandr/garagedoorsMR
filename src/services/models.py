@@ -37,5 +37,9 @@ class ServiceCategory(models.Model):
         if not self.slug and ServiceCategory.objects.filter(name__iexact=self.name):
             raise ValidationError('Service category with this name already exists')
 
+
+    class Meta:
+        verbose_name_plural = "Service categories"
+
     def __str__(self):
         return self.name
