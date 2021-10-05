@@ -23,7 +23,7 @@ class Article(models.Model):
         unique=True,
     )
     tags = TaggableManager()
-    publish_date = models.DateTimeField(auto_now_add=True)
+    publish_date = models.DateField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='article_like', editable=False)
 
     def clean(self):
@@ -87,7 +87,7 @@ class Comment(models.Model):
     status = models.IntegerField(choices=STATUS_LEVEL, default=0)
 
     text = models.CharField(max_length=250)
-    pub_date = models.DateTimeField('date published', auto_now_add=True)
+    pub_date = models.DateField('date published', auto_now_add=True)
 
     def __str__(self):
         return self.text[0:15] + ' - ' + self.article.title + ' - ' + self.user.username
