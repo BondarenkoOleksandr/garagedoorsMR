@@ -173,7 +173,7 @@ class ArticleByTagView(RetrieveAPIView):
         search_tags = self.request.GET.get('tags', '').lower().split(',')
         articles_by_tag = Article.objects.filter(tags__slug__in=search_tags).distinct()
         tags_list = [list(obj.tags.values('name', 'slug')) for obj in articles_by_tag]
-        articles_by_tag = articles_by_tag.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date')
+        articles_by_tag = articles_by_tag.values('id', 'author__username', 'title', 'excerpt', 'image', 'publish_date', 'slug')
         articles_by_tag = queryset_pagination(request, articles_by_tag)
         indx = 0
         for article in articles_by_tag:
