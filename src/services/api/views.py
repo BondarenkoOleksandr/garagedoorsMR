@@ -23,7 +23,7 @@ class ServiceCategoryView(ListAPIView):
 
     def get(self, request, slug):
         services = Service.objects.filter(category__slug=slug).values('id', 'name', 'slug', 'excerpt')
-        print(services.first().slug)
+        print(services)
 
         return JsonResponse(list(services), safe=False, json_dumps_params={'indent': 2})
 
