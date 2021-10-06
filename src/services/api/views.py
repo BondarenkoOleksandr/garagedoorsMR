@@ -22,7 +22,7 @@ class ServiceCategoryView(ListAPIView):
         services = Service.objects.filter(category__slug=slug)
         data = {}
         cat = ServiceCategory.objects.get(slug=slug)
-        data.update({cat.name: model_to_dict(service, exclude=['image']) for service in services})
+        data.update({cat.name: [model_to_dict(service, exclude=['image']) for service in services]})
 
         return JsonResponse(data)
 
