@@ -18,14 +18,11 @@ class ServicesDetailView(RetrieveAPIView):
 
 
 class ServiceCategoryView(ListAPIView):
-    def get(self, request, slug):
-        services = Service.objects.filter(category__slug=slug)
-        data = {}
-        cat = ServiceCategory.objects.get(slug=slug)
-        data.update({cat.name: [model_to_dict(service, fields=['name', 'slug', 'excerpt']) for service in services]})
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
 
-        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
-
+    def get_queryset(self, slug):
+        return Service.objects.filter(category__slug=slug)
 
 class ServiceCategoryListView(ListAPIView):
     queryset = ServiceCategory.objects.all()
