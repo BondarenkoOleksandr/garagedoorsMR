@@ -6,9 +6,17 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 
+class ServiceArticle(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    subtitle = models.CharField(max_length=200)
+    text = models.TextField()
+
+
 class Service(models.Model):
     name = models.CharField(max_length=250)
     image = models.ImageField(upload_to='services/single')
+    article = models.ForeignKey(ServiceArticle, null=True, on_delete=models.SET_NULL)
     slug = models.SlugField(
         max_length=250,
         editable=False,

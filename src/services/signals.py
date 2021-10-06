@@ -6,7 +6,7 @@ from services.models import Service, ServiceCategory
 
 
 @receiver(post_save, sender=Service)
-def save_lesson(sender, instance, created, **kwargs):
+def save_service(sender, instance, created, **kwargs):
     if created:
         value = instance.name
         instance.slug = slugify(value) + '-' + instance.category.slug
@@ -14,7 +14,7 @@ def save_lesson(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=ServiceCategory)
-def save_lesson(sender, instance, created, **kwargs):
+def save_service_cat(sender, instance, created, **kwargs):
     if created:
         value = instance.name
         instance.slug = slugify(value)
