@@ -24,7 +24,7 @@ class ServiceCategoryView(ListAPIView):
         cat = ServiceCategory.objects.get(slug=slug)
         data.update({cat.name: [model_to_dict(service, exclude=['image']) for service in services]})
 
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
 
 class ServiceCategoryListView(ListAPIView):
