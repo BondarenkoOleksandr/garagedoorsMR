@@ -16,7 +16,7 @@ class ServiceArticle(models.Model):
 class Service(models.Model):
     name = models.CharField(max_length=250)
     image = models.ImageField(upload_to='services/single')
-    article = models.ForeignKey(ServiceArticle, null=True, on_delete=models.SET_NULL)
+    article = models.OneToOneField(ServiceArticle, null=True, on_delete=models.SET_NULL)
     slug = models.SlugField(
         max_length=250,
         editable=False,
