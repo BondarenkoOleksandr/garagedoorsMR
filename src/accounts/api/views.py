@@ -2,11 +2,11 @@ from urllib.parse import urlencode
 
 from django.contrib.auth.models import User
 from django.forms import model_to_dict
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from rest_framework.views import APIView
 
 from django.urls import reverse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 from accounts.models import UserProfile
 from accounts.utils import google_get_access_token, google_get_user_info, jwt_login, save_avatar, \
@@ -49,9 +49,15 @@ class GoogleLoginApi(APIView):
         save_avatar(user_profile, user_data)
 
         response = redirect(base.DOMAIN)
-        response = jwt_login(response=response, user=user)
+        token = jwt_login(response=response, user=user)
 
-        return response
+        return render(
+            request=request,
+            template_name='success.html',
+            context={
+                'token': token,
+            }
+        )
 
 
 class FacebookLoginApi(APIView):
@@ -90,10 +96,15 @@ class FacebookLoginApi(APIView):
         save_avatar(user_profile, user_data)
 
         response = redirect(base.DOMAIN)
-        response = jwt_login(response=response, user=user)
-        print(response.cookies['token'])
+        token = jwt_login(response=response, user=user)
 
-        return response
+        return render(
+            request=request,
+            template_name='success.html',
+            context={
+                'token': token,
+            }
+        )
 
 
 class GetMeApi(APIView):

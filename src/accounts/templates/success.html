@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script type="text/javascript">
+      window.onload = function() {
+        window.opener.postMessage(JSON.stringify({token: "{{token}}"}), "*");
+        window.close();
+      };
+    </script>
+</body>
+</html>

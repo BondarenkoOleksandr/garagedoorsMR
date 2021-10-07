@@ -46,18 +46,16 @@ def google_get_user_info(*, access_token: str) -> Dict[str, Any]:
     return response.json()
 
 
-def jwt_login(*, response: HttpResponse, user: User) -> HttpResponse:
+def jwt_login(*, response: HttpResponse, user: User) -> str:
     jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
     jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
     payload = jwt_payload_handler(user)
     token = jwt_encode_handler(payload)
 
-    response.set_cookie('token', token)
-
     user_record_login(user=user)
 
-    return response
+    return token
 
 
 def save_avatar(profile, user_data):
