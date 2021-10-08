@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import datetime
 import os
 from pathlib import Path
 
@@ -148,6 +149,11 @@ TAGGIT_CASE_INSENSITIVE = True
 
 SITE_ID = 1
 REST_USE_JWT = True
+
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=604800),
+}
 
 CORS_ORIGIN_ALLOW_ALL = True
 
