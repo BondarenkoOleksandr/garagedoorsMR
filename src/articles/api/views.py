@@ -59,8 +59,8 @@ class TagsListView(ListAPIView):
 class ArticleCommentListView(ListAPIView):
     serializer_class = CommentSerializer
 
-    def get_queryset(self, id):
-        article_id = id
+    def get_queryset(self, **kwargs):
+        article_id = kwargs['id']
         return queryset_pagination(self.request, Comment.objects.filter(article__id=article_id, status=1))
 
 
