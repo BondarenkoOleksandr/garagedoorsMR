@@ -61,11 +61,10 @@ class TagsListView(ListAPIView):
 class ArticleCommentListView(ListAPIView):
     serializer_class = CommentSerializer
 
-    def get(self, id):
-        article_id = id
-        return JsonResponse(list(queryset_pagination(self.request,
-                                                     Comment.objects.filter(article__id=article_id, status=1))),
-                            safe=False, json_dumps_params={'indent': 2})
+    def get(self, request, id):
+        comments = queryset_pagination(self.request, Comment.objects.filter(article__id=id, status=1))
+        
+        return JsonResponse(list(comments), safe=False, json_dumps_params={'indent': 2})
 
 
 class ArticleDetailView(RetrieveAPIView):
