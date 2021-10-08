@@ -23,7 +23,8 @@ class ArticleListView(ListAPIView):
 
     def get(self, request):
         articles = Article.objects.all()
-        articles = Article.objects.values('id', 'author__first_name','author__last_name', 'title', 'excerpt', 'image', 'publish_date',
+        articles = Article.objects.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt', 'image',
+                                          'publish_date',
                                           'slug')
 
         articles = queryset_pagination(request, articles)
@@ -37,7 +38,8 @@ class ArticleListView(ListAPIView):
                                 Avg('rating')),
                             'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                         article__id=article['id']).count(),
-                            'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article['image'],
+                            'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article[
+                                'image'],
                             })
             if article['publish_date']:
                 article.update({'publish_date': article['publish_date'].strftime("%d %b %Y")})
@@ -59,9 +61,11 @@ class TagsListView(ListAPIView):
 class ArticleCommentListView(ListAPIView):
     serializer_class = CommentSerializer
 
-    def get_queryset(self, **kwargs):
-        article_id = kwargs['id']
-        return queryset_pagination(self.request, Comment.objects.filter(article__id=article_id, status=1))
+    def get(self, id):
+        article_id = id
+        return JsonResponse(list(queryset_pagination(self.request,
+                                                     Comment.objects.filter(article__id=article_id, status=1))),
+                            safe=False, json_dumps_params={'indent': 2})
 
 
 class ArticleDetailView(RetrieveAPIView):
@@ -73,7 +77,7 @@ class ArticleDetailView(RetrieveAPIView):
             return JsonResponse(['Article not fount'], safe=False)
         tags_list = list(article.first().tags.values('name'))
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
-        article = article.values('id', 'author__first_name','author__last_name', 'title', 'excerpt', 'image',
+        article = article.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt', 'image',
                                  'publish_date', 'slug')
 
         article = queryset_pagination(request, article)
@@ -95,7 +99,7 @@ class ArticleDetailView(RetrieveAPIView):
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__id=id).count(),
                         'tags': tags_list,
-                        'image': request.scheme + '://' + request.get_host()+ '/' + base.MEDIA_URL + art['image'],
+                        'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr})
             if art['publish_date']:
                 art.update({'publish_date': art['publish_date'].strftime("%d %b %Y")})
@@ -114,9 +118,8 @@ class ArticleDetailBySlugView(RetrieveAPIView):
         if not article:
             return JsonResponse(['Article not fount'], safe=False)
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
-        article = article.values('id', 'author__first_name','author__last_name', 'title', 'excerpt', 'image',
+        article = article.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt', 'image',
                                  'publish_date', 'slug')
-
 
         for art in article:
             paragr = []
@@ -140,7 +143,6 @@ class ArticleDetailBySlugView(RetrieveAPIView):
 
             if art['publish_date']:
                 art.update({'publish_date': art['publish_date'].strftime("%d %b %Y")})
-
 
         try:
             article.first().update({'image': request.get_host() + base.MEDIA_URL + art['image']})
@@ -175,7 +177,8 @@ class ArticleByTagView(RetrieveAPIView):
         search_tags = self.request.GET.get('tags', '').lower().split(',')
         articles_by_tag = Article.objects.filter(tags__slug__in=search_tags).distinct()
         tags_list = [list(obj.tags.values('name', 'slug')) for obj in articles_by_tag]
-        articles_by_tag = articles_by_tag.values('id', 'author__first_name','author__last_name', 'title', 'excerpt', 'image', 'publish_date', 'slug')
+        articles_by_tag = articles_by_tag.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt',
+                                                 'image', 'publish_date', 'slug')
         articles_by_tag = queryset_pagination(request, articles_by_tag)
         indx = 0
         for article in articles_by_tag:
