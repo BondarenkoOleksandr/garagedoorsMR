@@ -63,11 +63,12 @@ class ArticleCommentListView(ListAPIView):
     serializer_class = CommentSerializer
 
     def get(self, request, id):
-        comments = Comment.objects.filter(article__id=id, status=1).values('id', 'user__first_name', 'user__id', 'user__last_name', 'parent__id', 'text')
+        comments = Comment.objects.filter(article__id=id, status=1).values('id', 'user__first_name', 'user__id', 'user__last_name', 'parent__id', 'text', 'pub_date')
         comments = queryset_pagination(self.request, comments)
         for comment in comments:
             user = UserProfile.objects.get(user__id=comment.pop('user__id'))
-            comment.update({'image': request.scheme + '://' + request.get_host() + user.image.url})
+            comment.update({'image': request.scheme + '://' + request.get_host() + user.image.url,
+                            'pub_date': comment['pub_date'].strftime("%d %b %Y")})
         
         return JsonResponse(list(comments), safe=False, json_dumps_params={'indent': 2})
 
