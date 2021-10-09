@@ -66,7 +66,7 @@ class ArticleCommentListView(ListAPIView):
         comments = Comment.objects.filter(article__id=id, status=1).values('id', 'user__first_name', 'user__id', 'user__last_name', 'parent__id', 'text')
         comments = queryset_pagination(self.request, comments)
         for comment in comments:
-            user = UserProfile.objects.get(user__id=comment['user__id'])
+            user = UserProfile.objects.get(user__id=comment.pop('user__id'))
             comment.update({'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + user.image.url})
         
         return JsonResponse(list(comments), safe=False, json_dumps_params={'indent': 2})
