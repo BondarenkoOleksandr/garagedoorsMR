@@ -11,6 +11,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_
 from taggit.models import Tag
 from django.forms.models import model_to_dict
 
+from accounts.models import UserProfile
 from app.settings import base
 from articles.api.serializers import ArticleSerializer, TagSerializer, CommentSerializer, ArticleRatingSerializer
 from articles.models import Article, Comment, ArticleRating, ArticleView, Paragraphs
@@ -62,8 +63,11 @@ class ArticleCommentListView(ListAPIView):
     serializer_class = CommentSerializer
 
     def get(self, request, id):
-        comments = Comment.objects.filter(article__id=id, status=1).values('user__first_name', 'user__last_name', 'parent__id', 'text')
+        comments = Comment.objects.filter(article__id=id, status=1).values('id', 'user__first_name', 'user__id', 'user__last_name', 'parent__id', 'text')
         comments = queryset_pagination(self.request, comments)
+        for comment in comments:
+            user = UserProfile.objects.get(user__id=comment['user__id'])
+            comment.update({'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + user.image.url})
         
         return JsonResponse(list(comments), safe=False, json_dumps_params={'indent': 2})
 
