@@ -62,7 +62,7 @@ class ArticleCommentListView(ListAPIView):
     serializer_class = CommentSerializer
 
     def get(self, request, id):
-        comments = Comment.objects.filter(article__id=id, status=1).values('user__first_name', 'user__second_name', 'parent__id', 'text')
+        comments = Comment.objects.filter(article__id=id, status=1).values('user__first_name', 'user__last_name', 'parent__id', 'text')
         comments = queryset_pagination(self.request, comments)
         
         return JsonResponse(list(comments), safe=False, json_dumps_params={'indent': 2})
