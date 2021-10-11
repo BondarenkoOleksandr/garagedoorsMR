@@ -4,7 +4,7 @@ from django.contrib import admin
 from employees.models import Employee, Review
 
 
-class EmployeeInlines(admin.TabularInline):
+class EmployeeInlines(admin.StackedInline):
     model = Review
 
 

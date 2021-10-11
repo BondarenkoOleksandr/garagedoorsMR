@@ -4,11 +4,11 @@ from django.contrib import admin
 from services.models import Service, ServiceCategory, ServiceArticle, ServiceReview
 
 
-class ServiceInlines(admin.TabularInline):
+class ServiceInlines(admin.StackedInline):
     model = ServiceArticle
 
 
-class ServiceReviewInline(admin.TabularInline):
+class ServiceReviewInline(admin.StackedInline):
     model = ServiceReview
 
 
