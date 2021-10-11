@@ -18,7 +18,7 @@ class ServicesDetailView(RetrieveAPIView):
 
     def get(self, slug):
         service = Service.objects.filter(slug=slug)
-        article = get_object_or_404(ServiceArticle, article=service.first())
+        article = service.first()
         image_link = self.request.scheme + '://' + self.request.get_host()+ '/' + base.MEDIA_URL + service.image,
         service = model_to_dict(service.first(), exclude=['image'])
         service.update({'image': image_link,
