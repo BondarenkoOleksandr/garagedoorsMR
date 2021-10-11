@@ -51,3 +51,14 @@ class ServiceArticle(models.Model):
     article = models.OneToOneField(Service, null=True, on_delete=models.SET_NULL)
     subtitle = models.CharField(max_length=200)
     text = models.TextField()
+
+
+class ServiceReview(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=250)
+    logo = models.FileField(upload_to='reviews/')
+    text = models.TextField()
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name

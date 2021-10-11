@@ -29,7 +29,6 @@ class ServicesDetailView(RetrieveAPIView):
         if article:
             service.update({'article': model_to_dict(article.first())})
 
-
         return JsonResponse(service, safe=False, json_dumps_params={'indent': 2})
 
 
