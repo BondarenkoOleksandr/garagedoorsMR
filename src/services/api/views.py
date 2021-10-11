@@ -29,7 +29,9 @@ class ServicesDetailView(RetrieveAPIView):
         # if article:
         #     service.update({'article': model_to_dict(article.first())})
 
-        return JsonResponse(list(service.first()), safe=False, json_dumps_params={'indent': 2})
+        service = model_to_dict(service.first())
+
+        return JsonResponse(list(service), safe=False, json_dumps_params={'indent': 2})
 
 
 class ServiceCategoryView(ListAPIView):
