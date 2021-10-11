@@ -31,7 +31,7 @@ class Review(models.Model):
     )
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     name = models.CharField(max_length=250)
-    pub_date = models.DateField(auto_now_add=True)
+    pub_date = models.DateField()
     text = models.TextField()
     rating = models.IntegerField(choices=STARS, default=STARS[4])
 
