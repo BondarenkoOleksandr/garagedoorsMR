@@ -1,5 +1,5 @@
 from django.forms import model_to_dict
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404
 
 from app.settings import base
@@ -16,10 +16,13 @@ class ServicesDetailView(RetrieveAPIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
-    def get(self, slug):
+    def get(self, request, slug):
         service = Service.objects.filter(slug=slug)
-        article = service.first()
-        image_link = self.request.scheme + '://' + self.request.get_host()+ '/' + base.MEDIA_URL + service.image,
+        if not service:
+            return JsonResponse(['Service not fount'], safe=False)
+        service = service.first()
+        article = get_object_or_404(ServiceArticle, article=service)
+        image_link = self.request.scheme + '://' + self.request.get_host() + '/' + base.MEDIA_URL + service.image.url,
         service = model_to_dict(service.first(), exclude=['image'])
         service.update({'image': image_link,
                         'article': model_to_dict(article)})

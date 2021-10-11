@@ -3,3 +3,4 @@ env
 !.env.example
 !.dockerignore
 .sqlite3
+__pycache__
