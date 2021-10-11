@@ -5,6 +5,9 @@ from django.db import models
 # Create your models here.
 from django.core.exceptions import ValidationError
 
+from cities.models import City
+from states.models import State
+
 
 class Service(models.Model):
     name = models.CharField(max_length=250)
@@ -56,6 +59,8 @@ class ServiceArticle(models.Model):
 class ServiceReview(models.Model):
     service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=250)
+    city = models.ForeignKey(to=City, on_delete=models.SET_NULL, null=True)
+    state = models.ForeignKey(to=State, on_delete=models.SET_NULL, null=True)
     logo = models.FileField(upload_to='reviews/')
     text = models.TextField()
     date = models.DateField(auto_now_add=True)
