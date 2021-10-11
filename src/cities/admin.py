@@ -4,15 +4,15 @@ from django.contrib import admin
 from cities.models import City, FirstScreen, SecondScreen, ThirdScreen
 
 
-class FirstScreenInlines(admin.TabularInline):
+class FirstScreenInlines(admin.StackedInline):
     model = FirstScreen
 
 
-class SecondScreenInlines(admin.TabularInline):
+class SecondScreenInlines(admin.StackedInline):
     model = SecondScreen
 
 
-class ThirdScreenInlines(admin.TabularInline):
+class ThirdScreenInlines(admin.StackedInline):
     model = ThirdScreen
 
 

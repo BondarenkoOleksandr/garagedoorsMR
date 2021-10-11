@@ -3,7 +3,7 @@ from django.contrib import admin
 from articles.models import Article, Paragraphs, Comment, ArticleRating
 
 
-class ArticleInlines(admin.TabularInline):
+class ArticleInlines(admin.StackedInline):
     model = Paragraphs
 
 
