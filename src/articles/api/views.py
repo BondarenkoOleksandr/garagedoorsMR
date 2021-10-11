@@ -213,8 +213,10 @@ class ArticleByTagView(RetrieveAPIView):
 class CreateCommentAPI(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
+        print(request.data)
         article_id = request.data.get('article', '')
         text = request.data.get('text', '')
+        print(text)
         parent = request.data.get('parent', '')
 
         user = get_user_by_jwt(request)
