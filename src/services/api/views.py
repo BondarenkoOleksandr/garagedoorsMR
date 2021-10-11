@@ -17,7 +17,7 @@ class ServicesDetailView(RetrieveAPIView):
     serializer_class = ServiceSerializer
 
     def get(self, request, slug):
-        service = Service.objects.filter(slug=slug)
+        service = Service.objects.filter(slug=slug).values('name', 'slug', 'category', 'excerpt', 'image')
         if not service:
             return JsonResponse(['Service not fount'], safe=False)
         service = service.first()
