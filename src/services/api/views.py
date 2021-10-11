@@ -23,7 +23,7 @@ class ServicesDetailView(RetrieveAPIView):
         service = service.first()
         article = ServiceArticle.objects.filter(article=service)
         image_link = self.request.scheme + '://' + self.request.get_host() + '/' + base.MEDIA_URL + service.image.url,
-        service = model_to_dict(service.first(), exclude=['image'])
+        service = model_to_dict(service, exclude=['image'])
         service.update({'image': image_link,
                         'article': model_to_dict(article.first())})
 
