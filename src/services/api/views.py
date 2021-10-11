@@ -24,6 +24,7 @@ class ServicesDetailView(RetrieveAPIView):
         image_link = self.request.scheme + '://' + self.request.get_host() + '/' + base.MEDIA_URL + service.first().image.url
         service = service.values('name', 'slug', 'category', 'excerpt', 'image').first()
         service.update({'image': image_link})
+        print(service)
 
         if article:
             service.update({'article': model_to_dict(article.first())})
