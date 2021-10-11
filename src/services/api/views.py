@@ -18,18 +18,18 @@ class ServicesDetailView(RetrieveAPIView):
 
     def get(self, request, slug):
         service = Service.objects.filter(slug=slug)
-        if not service:
-            return JsonResponse(['Service not fount'], safe=False)
-        article = ServiceArticle.objects.filter(article=service.first())
-        image_link = self.request.scheme + '://' + self.request.get_host() + '/' + base.MEDIA_URL + service.first().image.url
-        service = service.values('name', 'slug', 'category', 'excerpt', 'image').first()
-        service.update({'image': image_link})
-        print(service)
+        # if not service:
+        #     return JsonResponse(['Service not fount'], safe=False)
+        # article = ServiceArticle.objects.filter(article=service.first())
+        # image_link = self.request.scheme + '://' + self.request.get_host() + '/' + base.MEDIA_URL + service.first().image.url
+        # service = service.values('name', 'slug', 'category', 'excerpt', 'image').first()
+        # service.update({'image': image_link})
+        # print(service)
+        #
+        # if article:
+        #     service.update({'article': model_to_dict(article.first())})
 
-        if article:
-            service.update({'article': model_to_dict(article.first())})
-
-        return JsonResponse(list(service), safe=False, json_dumps_params={'indent': 2})
+        return JsonResponse(list(service.first()), safe=False, json_dumps_params={'indent': 2})
 
 
 class ServiceCategoryView(ListAPIView):
