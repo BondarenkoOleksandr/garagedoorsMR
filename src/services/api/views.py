@@ -26,7 +26,9 @@ class ServicesDetailView(RetrieveAPIView):
         indx = 0
         for review in reviews:
             rev.append(model_to_dict(review, exclude=['logo', 'service', 'id']))
-            rev[indx].update({'image': self.request.scheme + '://' + self.request.get_host() + review.logo.url})
+            rev[indx].update({'image': self.request.scheme + '://' + self.request.get_host() + review.logo.url,
+                              'city': review.city.name,
+                              'state': review.state.name})
 
             indx += 1
 
