@@ -4,7 +4,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_
 
 from app.settings import base
 from services.api.serializers import ServiceSerializer, ServiceCategorySerializer
-from services.models import Service, ServiceCategory, ServiceArticle
+from services.models import Service, ServiceCategory, ServiceArticle, ServiceReview
 
 
 class ServicesListView(ListAPIView):
@@ -21,10 +21,22 @@ class ServicesDetailView(RetrieveAPIView):
         if not service:
             return JsonResponse(['Service not fount'], safe=False)
         article = ServiceArticle.objects.filter(article=service.first())
-        image_link = self.request.scheme + '://' + self.request.get_host() + '/' + base.MEDIA_URL + service.first().image.url
+        reviews = ServiceReview.objects.filter(service=service.first())
+        rev = []
+        indx = 0
+        for review in reviews:
+            rev.append(model_to_dict(review, exclude=['logo', 'service', 'id']))
+            rev[indx].update({'image': self.request.scheme + '://' + self.request.get_host() + review.logo.url})
+
+            indx += 1
+
+        image_link = self.request.scheme + '://' + self.request.get_host() + service.first().image.url
         service = service.values('name', 'slug', 'category', 'excerpt', 'image').first()
         service.update({'image': image_link})
         print(service)
+
+        if rev:
+            service.update({'reviews': rev})
 
         if article:
             service.update({'article': model_to_dict(article.first())})
