@@ -17,7 +17,7 @@ class Employee(models.Model):
     slug = models.SlugField(
         max_length=150,
         editable=False,
-        default=uuid.uuid1S
+        default=uuid.uuid1
     )
     def __str__(self):
         return self.name + ' - ' + self.position
