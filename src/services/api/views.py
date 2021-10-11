@@ -21,8 +21,8 @@ class ServicesDetailView(RetrieveAPIView):
         if not service:
             return JsonResponse(['Service not fount'], safe=False)
         article = ServiceArticle.objects.filter(article=service.first())
+        image_link = self.request.scheme + '://' + self.request.get_host() + '/' + base.MEDIA_URL + service.first().image.url
         service = service.values('name', 'slug', 'category', 'excerpt', 'image').first()
-        image_link = self.request.scheme + '://' + self.request.get_host() + '/' + base.MEDIA_URL + service.image.url,
         service = model_to_dict(service, exclude=['image'])
         service.update({'image': image_link})
 
