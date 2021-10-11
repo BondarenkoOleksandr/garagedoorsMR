@@ -17,10 +17,10 @@ class ServicesDetailView(RetrieveAPIView):
     serializer_class = ServiceSerializer
 
     def get(self, request, slug):
-        service = Service.objects.filter(slug=slug).values('name', 'slug', 'category', 'excerpt', 'image')
+        service = Service.objects.filter(slug=slug)
         if not service:
             return JsonResponse(['Service not fount'], safe=False)
-        service = service.first()
+        service = service.values('name', 'slug', 'category', 'excerpt', 'image').first()
         article = ServiceArticle.objects.filter(article=service)
         image_link = self.request.scheme + '://' + self.request.get_host() + '/' + base.MEDIA_URL + service.image.url,
         service = model_to_dict(service, exclude=['image'])
