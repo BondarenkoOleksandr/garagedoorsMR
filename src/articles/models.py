@@ -112,4 +112,4 @@ class Paragraphs(models.Model):
 
 
 class SEOArticle(SEOBase):
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, null=True, related_name='seo')
+    article = models.OneToOneField(Article, on_delete=models.CASCADE, null=True, related_name='seo')
