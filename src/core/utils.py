@@ -91,4 +91,6 @@ def change_text(models):
     for model in models:
         desc = model.description.replace('вЂ™', '')
         model.description = desc
+        desc = model.thirdscreen.main_description.replace('вЂ™', '\'')
+        model.thirdscreen.main_description = desc
         model.save()
