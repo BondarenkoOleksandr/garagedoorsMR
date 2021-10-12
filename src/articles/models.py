@@ -46,7 +46,7 @@ class Article(models.Model):
 
     def get_seo(self):
        if hasattr(self, 'seo'):
-           return self.seo
+           return self.seoarticle
        return None
 
 
