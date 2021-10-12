@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from articles.forms import ArticleForm
 from articles.models import Article, Paragraphs, Comment, ArticleRating, SEOArticle
 
 
@@ -14,6 +15,7 @@ class SEOArticleInlines(admin.StackedInline):
 class ArticleAdmin(admin.ModelAdmin):
     inlines = (ArticleInlines, SEOArticleInlines)
     search_fields = ['title']
+    form = ArticleForm
 
 
 admin.site.register(Article, ArticleAdmin)
