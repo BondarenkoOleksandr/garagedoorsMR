@@ -89,7 +89,9 @@ def change_rating(models):
 
 def change_text(models):
     for model in models:
-        model.secondscreen.main_title = model.thirdscreen.main_title.replace('вЂ™', '\'')
+        model.firstscreen.title = model.firstscreen.title.replace('вЂ™', '\'')
+        model.firstscreen.description = model.firstscreen.description.replace('вЂ™', '\'')
+        model.secondscreen.main_title = model.secondscreen.main_title.replace('вЂ™', '\'')
         model.secondscreen.main_description = model.secondscreen.main_description.replace('вЂ™', '\'')
         model.secondscreen.sec_title = model.secondscreen.sec_title.replace('вЂ™', '\'')
         model.secondscreen.sec_description = model.secondscreen.sec_description.replace('вЂ™', '\'')
@@ -99,5 +101,6 @@ def change_text(models):
         model.thirdscreen.thrd_title = model.thirdscreen.thrd_title.replace('вЂ™', '\'')
         model.thirdscreen.thrd_description = model.thirdscreen.thrd_description.replace('вЂ™', '\'')
         model.save()
+        model.firstscreen.save()
         model.secondscreen.save()
         model.thirdscreen.save()
