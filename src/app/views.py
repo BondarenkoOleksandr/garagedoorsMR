@@ -14,4 +14,4 @@ def login(request):
 class SitemapView(APIView):
 
     def get(self, request, *args, **kwargs):
-        return JsonResponse('waiting array...', safe=False)
+        return JsonResponse('waiting for array...', safe=False)
