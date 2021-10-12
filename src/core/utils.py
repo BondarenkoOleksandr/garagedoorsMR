@@ -89,8 +89,8 @@ def change_rating(models):
 
 def change_text(models):
     for model in models:
-        desc = model.description.replace('вЂ™', '')
+        desc = model.description.replace('вЂ™', '')+'1'
         model.description = desc
-        desc = model.thirdscreen.main_description.replace('вЂ™', '\'')
+        desc = model.thirdscreen.main_description.replace('вЂ™', '\'')+'1'
         model.thirdscreen.main_description = desc
         model.save()
