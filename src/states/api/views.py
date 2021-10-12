@@ -16,10 +16,13 @@ class StateDetailView(ListAPIView):
 
     def get(self, request, slug):
         state = State.objects.get(slug=slug)
+        seo = {}
+        if hasattr(state, 'seo'):
+            seo = model_to_dict(state.seo)
         data = model_to_dict(state, fields=['name', 'slug'])
         data.update({'first_screen': model_to_dict(state.firstscreen, exclude=['image', 'state']),
                      'second_screen': model_to_dict(state.secondscreen, exclude=['state']),
                      'third_screen': model_to_dict(state.thirdscreen, exclude=['image', 'state']),
-                     'seo': model_to_dict(state.seo)})
+                     'seo': seo})
         data = add_images_path(request, state, data)
         return JsonResponse(data)
