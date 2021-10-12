@@ -4,7 +4,7 @@ from django.utils.safestring import mark_safe
 
 class ArticleForm(forms.ModelForm):
     image = forms.FileField(
-            widget=forms.ClearableFileInput(attrs={'multiple': True}),
+            widget=forms.CharField(attrs={'size': 10, 'title': 'Your name'}),
             required=False,
             help_text='Необходимое количество фото - 7',
             label=mark_safe("<strong>Фото</strong>")
