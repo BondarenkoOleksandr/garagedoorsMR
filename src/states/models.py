@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 # Create your models here.
+from seo.models import SEOBase
 
 
 class State(models.Model):
@@ -61,3 +62,7 @@ class ThirdScreen(models.Model):
 class Paragraphs(models.Model):
     text = models.TextField(max_length=250)
     state = models.ForeignKey(to='states.State', on_delete=models.CASCADE, related_name='list', null=True)
+
+
+class SEOState(SEOBase):
+    state = models.OneToOneField(State, on_delete=models.CASCADE, null=True, related_name='seo')

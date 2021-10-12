@@ -6,6 +6,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 from cities.models import City
+from seo.models import SEOBase
 from states.models import State
 
 
@@ -67,3 +68,7 @@ class ServiceReview(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class SEOServiceArticle(SEOBase):
+    article = models.OneToOneField(ServiceArticle, on_delete=models.CASCADE, null=True, related_name='seo')

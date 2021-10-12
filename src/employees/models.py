@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 
 # Create your models here.
+from seo.models import SEOBase
 from states.models import State
 
 
@@ -39,3 +40,7 @@ class Review(models.Model):
 
     def __str__(self):
         return self.name + ' - ' + self.text[:35] + self.employee.name
+
+
+class SEOEmployee(SEOBase):
+    employee = models.OneToOneField(Employee, on_delete=models.CASCADE, null=True, related_name='seo')
