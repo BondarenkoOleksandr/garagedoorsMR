@@ -82,6 +82,6 @@ def change_slug(models):
 
 def change_rating(models):
     for model in models:
-        model.rating = random.randint(1, 5)
+        model.rating = random.randint(3, 5)
         model.count_votes = random.randint(10, 45)
         model.save()
