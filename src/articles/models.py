@@ -111,5 +111,5 @@ class Paragraphs(models.Model):
         verbose_name_plural = "Paragraphs"
 
 
-class SEOArticles(SEOBase):
+class SEOArticle(SEOBase):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, null=True, related_name='seo')
