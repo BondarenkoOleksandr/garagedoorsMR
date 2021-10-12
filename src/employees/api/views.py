@@ -46,6 +46,7 @@ class EmployeeDetailView(RetrieveAPIView):
         data.update({'photo': request.build_absolute_uri(employee.photo.url)})
         data.update({'state': employee.state.name})
         data.update({'reviews': reviews_list})
+        data.update({'seo': model_to_dict(employee.seo)})
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
 
 

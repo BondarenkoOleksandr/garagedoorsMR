@@ -19,6 +19,7 @@ class StateDetailView(ListAPIView):
         data = model_to_dict(state, fields=['name', 'slug'])
         data.update({'first_screen': model_to_dict(state.firstscreen, exclude=['image', 'state']),
                      'second_screen': model_to_dict(state.secondscreen, exclude=['state']),
-                     'third_screen': model_to_dict(state.thirdscreen, exclude=['image', 'state'])})
+                     'third_screen': model_to_dict(state.thirdscreen, exclude=['image', 'state']),
+                     'seo': model_to_dict(state.seo)})
         data = add_images_path(request, state, data)
         return JsonResponse(data)

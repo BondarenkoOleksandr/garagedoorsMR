@@ -63,13 +63,15 @@ class ArticleCommentListView(ListAPIView):
     serializer_class = CommentSerializer
 
     def get(self, request, id):
-        comments = Comment.objects.filter(article__id=id, status=1).values('id', 'user__first_name', 'user__id', 'user__last_name', 'parent__id', 'text', 'pub_date')
+        comments = Comment.objects.filter(article__id=id, status=1).values('id', 'user__first_name', 'user__id',
+                                                                           'user__last_name', 'parent__id', 'text',
+                                                                           'pub_date')
         comments = queryset_pagination(self.request, comments)
         for comment in comments:
             user = UserProfile.objects.get(user__id=comment.pop('user__id'))
             comment.update({'image': request.scheme + '://' + request.get_host() + user.image.url,
                             'pub_date': comment['pub_date'].strftime("%d %b %Y")})
-        
+
         return JsonResponse(list(comments), safe=False, json_dumps_params={'indent': 2})
 
 
@@ -124,7 +126,10 @@ class ArticleDetailBySlugView(RetrieveAPIView):
             return JsonResponse(['Article not fount'], safe=False)
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
         article = article.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt', 'image',
-                                 'publish_date', 'slug')
+                                 'publish_date', 'slug', 'seo__seo_title',
+                                                 'seo__seo_description',
+                                                 'seo__seo_canonical', 'seo__seo_schema', 'seo__seo_robots',
+                                                 'seo__seo_og')
 
         for art in article:
             paragr = []

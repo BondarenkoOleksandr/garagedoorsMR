@@ -39,7 +39,8 @@ class CityDetailView(RetrieveAPIView):
         data = model_to_dict(city, fields=['name', 'description', 'slug', 'is_main', 'is_menu'])
         data.update({'state': city.state.name, 'first_screen': model_to_dict(city.firstscreen, exclude=['image']),
                      'second_screen': model_to_dict(city.secondscreen),
-                     'third_screen': model_to_dict(city.thirdscreen, exclude=['image'])})
+                     'third_screen': model_to_dict(city.thirdscreen, exclude=['image']),
+                     'seo': model_to_dict(city.seo)})
 
         data = add_images_path(request, city, data)
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
