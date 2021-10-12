@@ -44,3 +44,6 @@ class Review(models.Model):
 
 class SEOEmployee(SEOBase):
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE, null=True, related_name='seo')
+
+    class Meta:
+        verbose_name_plural = "SEO"

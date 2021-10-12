@@ -72,3 +72,6 @@ class ServiceReview(models.Model):
 
 class SEOServiceArticle(SEOBase):
     article = models.OneToOneField(ServiceArticle, on_delete=models.CASCADE, null=True, related_name='seo')
+
+    class Meta:
+        verbose_name_plural = "SEO"

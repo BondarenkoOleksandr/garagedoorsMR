@@ -74,3 +74,6 @@ class Paragraphs(models.Model):
 
 class SEOCity(SEOBase):
     state = models.OneToOneField(City, on_delete=models.CASCADE, null=True, related_name='seo')
+
+    class Meta:
+        verbose_name_plural = "SEO"

@@ -113,3 +113,6 @@ class Paragraphs(models.Model):
 
 class SEOArticle(SEOBase):
     article = models.OneToOneField(Article, on_delete=models.CASCADE, null=True, related_name='seo')
+
+    class Meta:
+        verbose_name_plural = "SEO"
