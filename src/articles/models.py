@@ -44,6 +44,11 @@ class Article(models.Model):
     def get_slug(self):
         return self.slug
 
+    def get_seo(self):
+       if hasattr(self, 'seo'):
+           return self.seo
+       return None
+
 
 class ArticleView(models.Model):
     IPAddress = models.GenericIPAddressField(default="45.243.82.169")
