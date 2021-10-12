@@ -18,7 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from app.views import index
+from app.views import index, SitemapView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,6 +36,7 @@ urlpatterns += [
     path('api/', include('faq.api.urls')),
     path('api/', include('coupons.api.urls')),
     path('api/', include('accounts.api.urls')),
+    path('api/', SitemapView.as_view()),
 ]
 
 urlpatterns += \
