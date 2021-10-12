@@ -9,6 +9,7 @@ from taggit.managers import TaggableManager
 
 
 # Create your models here.
+from seo.models import SEOBase
 
 
 class Article(models.Model):
@@ -108,3 +109,7 @@ class Paragraphs(models.Model):
 
     class Meta:
         verbose_name_plural = "Paragraphs"
+
+
+class SEOArticles(SEOBase):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, null=True, related_name='seo')
