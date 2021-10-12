@@ -13,7 +13,7 @@ class Employee(models.Model):
     position = models.CharField(max_length=100)
     type_of_works = models.TextField()
     state = models.ForeignKey(to=State, on_delete=models.SET_NULL, null=True)
-    rating = models.SmallIntegerField(null=True)
+    rating = models.DecimalField(null=True)
     count_votes = models.SmallIntegerField(null=True)
     slug = models.SlugField(
         max_length=150,
