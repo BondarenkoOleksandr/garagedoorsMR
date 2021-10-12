@@ -1,23 +1,26 @@
 from django.contrib import admin
 
 # Register your models here.
-from services.models import Service, ServiceCategory, ServiceArticle, ServiceReview, SEOServiceArticle
+from nested_inline.admin import NestedStackedInline
 
-
-class ServiceInlines(admin.StackedInline):
-    model = ServiceArticle
+from services.models import Service, ServiceCategory, ServiceArticle, ServiceReview, SEOService
 
 
 class ServiceReviewInline(admin.StackedInline):
     model = ServiceReview
 
 
-class SEOServiceArticleInlines(admin.StackedInline):
-    model = SEOServiceArticle
+class SEOServiceInlines(NestedStackedInline):
+    model = SEOService
+
+
+class ServiceArticleInlines(NestedStackedInline):
+    model = ServiceArticle
+    inlines = (SEOServiceInlines, )
 
 
 class ServiceAdmin(admin.ModelAdmin):
-    inlines = (ServiceInlines, ServiceReviewInline)
+    inlines = (ServiceArticleInlines, ServiceReviewInline)
     search_fields = ['category__name', 'name']
 
 
