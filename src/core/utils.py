@@ -1,4 +1,5 @@
 import datetime
+import random
 
 from django.utils import timezone
 
@@ -76,4 +77,11 @@ def change_slug(models):
     for model in models:
         name = model.name
         model.slug = slugify(name)
+        model.save()
+
+
+def change_rating(models):
+    for model in models:
+        model.rating = random.randint(1, 5)
+        model.count_votes = random.randint(10, 45)
         model.save()
