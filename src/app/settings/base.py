@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_extensions',
     'taggit',
-    'nested_inline',
 
     'articles',
     'employees',

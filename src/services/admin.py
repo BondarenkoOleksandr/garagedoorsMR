@@ -10,13 +10,12 @@ class ServiceReviewInline(admin.StackedInline):
     model = ServiceReview
 
 
-class SEOServiceInlines(NestedStackedInline):
+class SEOServiceInlines(admin.StackedInline):
     model = SEOServiceArticle
 
 
-class ServiceArticleInlines(NestedStackedInline):
+class ServiceArticleInlines(admin.StackedInline):
     model = ServiceArticle
-    inlines = (SEOServiceInlines, )
 
 
 class ServiceAdmin(admin.ModelAdmin):
