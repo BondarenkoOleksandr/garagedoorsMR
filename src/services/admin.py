@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from nested_inline.admin import NestedStackedInline
 
-from services.models import Service, ServiceCategory, ServiceArticle, ServiceReview, SEOService
+from services.models import Service, ServiceCategory, ServiceArticle, ServiceReview, SEOServiceArticle
 
 
 class ServiceReviewInline(admin.StackedInline):
@@ -11,7 +11,7 @@ class ServiceReviewInline(admin.StackedInline):
 
 
 class SEOServiceInlines(NestedStackedInline):
-    model = SEOService
+    model = SEOServiceArticle
 
 
 class ServiceArticleInlines(NestedStackedInline):
