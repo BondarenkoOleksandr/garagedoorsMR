@@ -25,4 +25,5 @@ class StateDetailView(ListAPIView):
                      'third_screen': model_to_dict(state.thirdscreen, exclude=['image', 'state']),
                      'seo': seo})
         data = add_images_path(request, state, data)
-        return JsonResponse(data)
+
+        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
