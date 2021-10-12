@@ -125,6 +125,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
         if not article:
             return JsonResponse(['Article not fount'], safe=False)
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
+        seo = model_to_dict(article.seo)
         article = article.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt', 'image',
                                  'publish_date', 'slug')
 
@@ -147,7 +148,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                         'tags': tags_list,
                         'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr,
-                        'seo': model_to_dict(article.seoarticle)})
+                        'seo': seo})
 
             if art['publish_date']:
                 art.update({'publish_date': art['publish_date'].strftime("%d %b %Y")})
