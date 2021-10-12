@@ -147,7 +147,7 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                         'tags': tags_list,
                         'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr,
-                        'seo': model_to_dict(article.seo)})
+                        'seo': model_to_dict(article.seoarticle)})
 
             if art['publish_date']:
                 art.update({'publish_date': art['publish_date'].strftime("%d %b %Y")})
