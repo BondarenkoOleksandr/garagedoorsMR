@@ -85,3 +85,10 @@ def change_rating(models):
         model.rating = random.randint(4, 5)
         model.count_votes = random.randint(10, 45)
         model.save()
+
+
+def change_text(models):
+    for model in models:
+        desc = model.description.replace('вЂ™', '')
+        model.description = desc
+        model.save()
