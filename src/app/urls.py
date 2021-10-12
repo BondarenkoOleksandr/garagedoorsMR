@@ -27,6 +27,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
+    path('api/sitemap', SitemapView.as_view()),
     path('api/', include('articles.api.urls')),
     path('api/', include('employees.api.urls')),
     path('api/', include('cities.api.urls')),
@@ -36,7 +37,6 @@ urlpatterns += [
     path('api/', include('faq.api.urls')),
     path('api/', include('coupons.api.urls')),
     path('api/', include('accounts.api.urls')),
-    path('api/', SitemapView.as_view()),
 ]
 
 urlpatterns += \
