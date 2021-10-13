@@ -16,7 +16,7 @@ from seo.models import SEOBase
 class Article(models.Model):
     RATING_COUNT = [(i, i) for i in range(1, 6)]
     author = models.ForeignKey(User, related_name='poster', on_delete=models.SET_NULL, null=True)
-    image = models.ForeignKey(Photo, on_delete=models.SET_NULL, null=True)
+    bg_image = models.ForeignKey(Photo, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=100)
     excerpt = models.TextField(max_length=1000, null=True)
     slug = models.SlugField(
