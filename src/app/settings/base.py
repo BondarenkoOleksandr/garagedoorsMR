@@ -232,6 +232,9 @@ JAZZMIN_SETTINGS = {
         "reviews.Review": "fas fa-comment-alt",
         "services.Service": "fas fa-info-circle",
         "services.ServiceCategory": "fas fa-hands-helping",
+        "coupons.Coupon": "fas fa-ticket-alt",
+        "accounts.UserProfile": "fas fa-id-card",
+        "sites.Site": "fas fa-globe",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
