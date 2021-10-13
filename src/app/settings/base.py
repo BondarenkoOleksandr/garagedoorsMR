@@ -157,10 +157,10 @@ JAZZMIN_SETTINGS = {
     "site_icon": None,
 
     # Welcome text on the login screen
-    "welcome_sign": "Welcome to the library",
+    "welcome_sign": "Welcome to the Garage doors MR!",
 
     # Copyright on the footer
-    "copyright": "Acme Library Ltd",
+    "copyright": "Art Ads Agency 2021",
 
     # The model admin to search from the search bar, search bar omitted if excluded
     "search_model": "auth.User",
