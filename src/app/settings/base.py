@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'accounts',
     'coupons',
     'seo',
+    'gallery',
 ]
 
 MIDDLEWARE = [
