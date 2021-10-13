@@ -47,6 +47,7 @@ class ArticleListView(ListAPIView):
             if article['bg_image__image']:
                 article.update({'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article[
                     'bg_image__image']})
+                del article['bg_image__image']
 
             indx += 1
 
