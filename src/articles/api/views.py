@@ -40,11 +40,14 @@ class ArticleListView(ListAPIView):
                                 Avg('rating')),
                             'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                         article__id=article['id']).count(),
-                            'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article[
-                                'bg_image__image'],
                             })
             if article['publish_date']:
                 article.update({'publish_date': article['publish_date'].strftime("%d %b %Y")})
+
+            if article['bg_image__image']:
+                article.update({'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article[
+                    'bg_image__image']})
+
             indx += 1
 
         data = list(articles)
