@@ -9,7 +9,7 @@ class Photo(models.Model):
     title = models.CharField(max_length=250)
 
     def image_tag(self):
-        return mark_safe('<img src="/gallery/%s" width="150" height="150" />' % (self.image))
+        return mark_safe('<img src="/media/%s" width="150" height="150" />' % (self.image))
 
     image_tag.short_description = 'Image'
     image_tag.allow_tags = True
