@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.html import mark_safe
 # Create your models here.
 
 
@@ -9,8 +9,7 @@ class Photo(models.Model):
     title = models.CharField(max_length=250)
 
     def image_tag(self):
-        from django.utils.html import escape
-        return u'<img src="%s" />' % escape(self.image.url)
+        return mark_safe('<img src="/gallery/%s" width="150" height="150" />' % (self.image))
 
     image_tag.short_description = 'Image'
     image_tag.allow_tags = True
