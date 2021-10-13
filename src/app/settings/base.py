@@ -226,6 +226,7 @@ JAZZMIN_SETTINGS = {
         "articles.Comment": "far fa-comments",
         "cities.City": "fal fa-city",
         "states.State": "far fa-flag",
+        "employees.Employee": "fas fa-user-tie",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
