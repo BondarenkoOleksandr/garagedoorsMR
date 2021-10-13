@@ -224,7 +224,7 @@ JAZZMIN_SETTINGS = {
         "auth.Group": "fas fa-users",
         "articles.Article": "fas fa-newspaper",
         "articles.Comment": "far fa-comments",
-        "cities.City": "fal fa-city",
+        "cities.City": "fas fa-building",
         "states.State": "far fa-flag",
         "employees.Employee": "fas fa-user-tie",
         "taggit.Tag": "fas fa-hashtag",
@@ -235,6 +235,8 @@ JAZZMIN_SETTINGS = {
         "coupons.Coupon": "fas fa-ticket-alt",
         "accounts.UserProfile": "fas fa-id-card",
         "sites.Site": "fas fa-globe",
+        "faq.FAQ": "far fa-question-circle",
+        "faq.FAQ": "far fa-question-circle",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
