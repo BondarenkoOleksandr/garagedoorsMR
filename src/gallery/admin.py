@@ -7,6 +7,7 @@ from gallery.models import Photo
 class PhotoAdmin(admin.ModelAdmin):
     fields = ('image_tag', 'image', 'alt', 'title', )
     readonly_fields = ('image_tag',)
+    list_display = ('image_tag', 'alt', 'title')
 
 
 admin.site.register(Photo, PhotoAdmin)

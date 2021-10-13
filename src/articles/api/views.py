@@ -89,7 +89,8 @@ class ArticleDetailView(RetrieveAPIView):
             return JsonResponse(['Article not fount'], safe=False)
         tags_list = list(article.first().tags.values('name'))
         obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
-        article = article.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt', 'image',
+        article = article.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt', 'bg_image__image',
+                                 'bg_image__alt', 'bg_image__title',
                                  'publish_date', 'slug')
 
         article = queryset_pagination(request, article)
@@ -111,10 +112,15 @@ class ArticleDetailView(RetrieveAPIView):
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__id=id).count(),
                         'tags': tags_list,
-                        'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr})
+
             if art['publish_date']:
                 art.update({'publish_date': art['publish_date'].strftime("%d %b %Y")})
+
+            if art['bg_image__image']:
+                art.update({'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + art[
+                    'bg_image__image']})
+                del art['bg_image__image']
 
         data = list(article)
 
@@ -134,7 +140,8 @@ class ArticleDetailBySlugView(RetrieveAPIView):
 
         if hasattr(article.first(), 'seo'):
             seo = model_to_dict(article.first().seo)
-        article = article.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt', 'image',
+        article = article.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt', 'bg_image__image',
+                                 'bg_image__alt', 'bg_image__title',
                                  'publish_date', 'slug')
 
         for art in article:
@@ -154,12 +161,18 @@ class ArticleDetailBySlugView(RetrieveAPIView):
                         'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                     article__slug=slug).count(),
                         'tags': tags_list,
-                        'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + art['image'],
                         'paragraphs': paragr,
                         'seo': seo})
 
+
             if art['publish_date']:
                 art.update({'publish_date': art['publish_date'].strftime("%d %b %Y")})
+
+            if art['bg_image__image']:
+                art.update({'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + art[
+                    'bg_image__image']})
+                del art['bg_image__image']
+
 
         try:
             article.first().update({'image': request.get_host() + base.MEDIA_URL + art['image']})
@@ -195,7 +208,7 @@ class ArticleByTagView(RetrieveAPIView):
         articles_by_tag = Article.objects.filter(tags__slug__in=search_tags).distinct()
         tags_list = [list(obj.tags.values('name', 'slug')) for obj in articles_by_tag]
         articles_by_tag = articles_by_tag.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt',
-                                                 'image', 'publish_date', 'slug')
+                                                 'bg_image__image', 'bg_image__alt', 'bg_image__title', 'publish_date', 'slug')
         articles_by_tag = queryset_pagination(request, articles_by_tag)
         indx = 0
         for article in articles_by_tag:
@@ -209,11 +222,15 @@ class ArticleByTagView(RetrieveAPIView):
                  'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                              article__id=article['id']).count(),
                  'tags': tags_list[indx],
-                 'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article['image'],
                  })
 
             if article['publish_date']:
                 article.update({'publish_date': article['publish_date'].strftime("%d %b %Y")})
+
+            if article['bg_image__image']:
+                article.update({'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article[
+                    'bg_image__image']})
+                del article['bg_image__image']
 
             indx += 1
 
