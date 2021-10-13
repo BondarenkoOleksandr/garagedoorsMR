@@ -4,7 +4,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 # Create your models here.
-from gallery.models import Photo
 from seo.models import SEOBase
 from states.models import State
 
@@ -37,7 +36,7 @@ class FirstScreen(models.Model):
     city = models.OneToOneField(to=City, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=250)
     description = models.TextField(max_length=500)
-    image = models.ForeignKey(Photo, on_delete=models.SET_NULL, null=True)
+    image = models.ImageField(upload_to='cities/first_screen/', blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "First Screen"
@@ -62,7 +61,7 @@ class ThirdScreen(models.Model):
     sec_description = models.TextField()
     thrd_title = models.CharField(max_length=250)
     thrd_description = models.TextField()
-    image = models.ForeignKey(Photo, on_delete=models.SET_NULL, null=True)
+    image = models.ImageField(upload_to='cities/third_screen/', blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Third Screen"
