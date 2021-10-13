@@ -160,7 +160,7 @@ JAZZMIN_SETTINGS = {
     "welcome_sign": "Welcome to the Garage doors MR!",
 
     # Copyright on the footer
-    "copyright": "Art Ads Agency 2021",
+    "copyright": "Art Ads 2021",
 
     # The model admin to search from the search bar, search bar omitted if excluded
     "search_model": "auth.User",
