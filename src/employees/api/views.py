@@ -43,7 +43,10 @@ class EmployeeDetailView(RetrieveAPIView):
             reviews_list[indx].update({'publish_date': review.pub_date.strftime("%d %b %Y")})
             indx += 1
         data = model_to_dict(employee, fields=['name', 'position', 'type_of_works', 'slug'])
-        data.update({'photo': request.build_absolute_uri(employee.photo.url)})
+        if employee.photo.image:
+            data.update({'photo': request.build_absolute_uri(employee.photo.image.url)})
+            data.update({'photo_alt': request.build_absolute_uri(employee.photo.image.alt)})
+            data.update({'photo_title': request.build_absolute_uri(employee.photo.image.title)})
         data.update({'state': employee.state.name})
         data.update({'reviews': reviews_list})
         if hasattr(employee, 'seo'):
