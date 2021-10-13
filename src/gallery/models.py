@@ -15,4 +15,4 @@ class Photo(models.Model):
     image_tag.allow_tags = True
 
     def __str__(self):
-        return self.image_tag()
+        return self.title + ' - ' + str(self.id)
