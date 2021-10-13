@@ -3,12 +3,14 @@ import uuid
 from django.db import models
 
 # Create your models here.
+from gallery.models import Photo
 from seo.models import SEOBase
 from states.models import State
 
 
 class Employee(models.Model):
     name = models.CharField(max_length=100)
+    photo = models.ForeignKey(Photo, on_delete=models.SET_NULL, null=True)
     position = models.CharField(max_length=100)
     type_of_works = models.TextField()
     state = models.ForeignKey(to=State, on_delete=models.SET_NULL, null=True)
