@@ -228,6 +228,10 @@ JAZZMIN_SETTINGS = {
         "states.State": "far fa-flag",
         "employees.Employee": "fas fa-user-tie",
         "taggit.Tag": "fas fa-hashtag",
+        "gallery.Photo": "far fa-images",
+        "reviews.Review": "fas fa-comment-alt",
+        "services.Service": "fas fa-info-circle",
+        "services.ServiceCategory": "fas fa-hands-helping",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
