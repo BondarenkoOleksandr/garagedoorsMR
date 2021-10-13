@@ -24,7 +24,8 @@ class ArticleListView(ListAPIView):
 
     def get(self, request):
         articles = Article.objects.all()
-        articles = Article.objects.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt', 'image',
+        articles = Article.objects.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt',
+                                          'bg_image__url', 'bg_image__alt', 'bg_image__title',
                                           'publish_date',
                                           'slug')
 
@@ -40,7 +41,7 @@ class ArticleListView(ListAPIView):
                             'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
                                                                         article__id=article['id']).count(),
                             'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article[
-                                'image'],
+                                'bg_image__url'],
                             })
             if article['publish_date']:
                 article.update({'publish_date': article['publish_date'].strftime("%d %b %Y")})
