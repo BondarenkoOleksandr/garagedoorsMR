@@ -9,6 +9,7 @@ class PhotoAdmin(admin.ModelAdmin):
     readonly_fields = ('image_tag',)
     list_display = ('image_tag', 'alt', 'title')
     list_per_page = 10
+    search_fields = ('alt', 'title')
 
 
 admin.site.register(Photo, PhotoAdmin)
