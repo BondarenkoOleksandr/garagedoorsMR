@@ -75,3 +75,6 @@ class SEOServiceArticle(SEOBase):
 
     class Meta:
         verbose_name_plural = "SEO"
+
+
+class SertviceFAQ(models.Model):
