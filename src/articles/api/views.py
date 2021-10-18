@@ -67,15 +67,12 @@ class TagsListView(ListAPIView):
 class ArticleCommentListView(ListAPIView):
     serializer_class = CommentSerializer
 
+
     def get(self, request, id):
         comments = Comment.objects.filter(article__id=id, status=1).values('id', 'user__first_name', 'user__id',
                                                                            'user__last_name', 'parent__id', 'text',
-                                                                           'pub_date')
+                                                                           'get_pub_date', 'get_absolute_user_image_url')
         comments = queryset_pagination(self.request, comments)
-        for comment in comments:
-            user = UserProfile.objects.get(user__id=comment.pop('user__id'))
-            comment.update({'image': request.scheme + '://' + request.get_host() + user.image.url,
-                            'pub_date': comment['pub_date'].strftime("%d %b %Y")})
 
         return JsonResponse(list(comments), safe=False, json_dumps_params={'indent': 2})
 
@@ -256,7 +253,7 @@ class CreateCommentAPI(CreateAPIView):
             comment = Comment.objects.create(
                 user=user,
                 article=article,
-                text=text,
+                    text=text,
             )
 
             if parent:

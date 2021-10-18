@@ -7,7 +7,6 @@ from django.db.models import Avg
 from django.core.exceptions import ValidationError
 from taggit.managers import TaggableManager
 
-
 # Create your models here.
 from gallery.models import Photo
 from seo.models import SEOBase
@@ -31,6 +30,9 @@ class Article(models.Model):
     def clean(self):
         if not self.slug and Article.objects.filter(title__iexact=self.title):
             raise ValidationError('Article with this title already exists')
+
+    def get_absolute_bg_image_url(self):
+        return self.request.scheme + '://' + self.get_host() + self.bg_image.image.url
 
     def __str__(self):
         return self.title + ' - ' + self.author.username
@@ -93,6 +95,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text[0:15] + ' - ' + self.article.title + ' - ' + self.user.username
+
+    def get_absolute_user_image_url(self):
+        return self.request.scheme + '://' + self.get_host() + self.user.image.url
+
+    def get_pub_date(self):
+        return self.pub_date.strftime("%d %b %Y")
 
 
 class Paragraphs(models.Model):
