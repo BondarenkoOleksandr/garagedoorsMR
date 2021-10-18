@@ -6,14 +6,13 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 from cities.models import City
-from gallery.models import Photo
 from seo.models import SEOBase
 from states.models import State
 
 
 class Service(models.Model):
     name = models.CharField(max_length=250)
-    image = models.ForeignKey(Photo, on_delete=models.SET_NULL, null=True, related_name='+')
+
     slug = models.SlugField(
         max_length=250,
         editable=False,
