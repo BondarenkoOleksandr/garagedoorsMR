@@ -12,7 +12,6 @@ from states.models import State
 
 class Service(models.Model):
     name = models.CharField(max_length=250)
-    image = models.ImageField(upload_to='services/single')
     slug = models.SlugField(
         max_length=250,
         editable=False,
