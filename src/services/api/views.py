@@ -32,7 +32,7 @@ class ServicesDetailView(RetrieveAPIView):
 
             indx += 1
 
-        image_link = self.request.scheme + '://' + self.request.get_host() + service.first().image.photo.url
+        image_link = self.request.scheme + '://' + self.request.get_host() + service.first().image.image.url
         service = service.values('name', 'slug', 'category', 'excerpt').first()
         service.update({'image': image_link})
         print(service)
