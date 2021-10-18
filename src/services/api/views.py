@@ -32,12 +32,12 @@ class ServicesDetailView(RetrieveAPIView):
 
             indx += 1
 
-        if service.first().image:
-            image_link = self.request.scheme + '://' + self.request.get_host() + service.first().image.image.url
-        else:
-            image_link = 'null'
+        image = service.first().image
         service = service.values('name', 'slug', 'category', 'excerpt').first()
-        service.update({'image': image_link})
+        if image:
+            service.update({'image': self.request.scheme + '://' + self.request.get_host() + image.image.url,
+                            'alt': image.image.alt,
+                            'title': image.image.title})
 
         if rev:
             service.update({'reviews': rev})
