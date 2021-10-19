@@ -19,7 +19,7 @@ class SEOEmployeeSerializer(serializers.ModelSerializer):
 class EmployeeSerializer(serializers.ModelSerializer):
     seo = SEOEmployeeSerializer()
     reviews = EmployeeReviewSerializer(many=True)
-    photo = serializers.ImageField(source='photo.image')
+    # photo = serializers.ImageField(source='photo.image')
     state = serializers.CharField(source='state.name')
 
     class Meta:
