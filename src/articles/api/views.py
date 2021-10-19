@@ -10,6 +10,7 @@ from core.utils import get_user_ip, get_user_by_jwt, LargeResultsSetPagination
 
 
 class ArticleListView(ListAPIView):
+    queryset = Article.objects.all()
     serializer_class = ArticleListSerializer
     pagination_class = LargeResultsSetPagination
 
