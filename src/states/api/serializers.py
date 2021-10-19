@@ -16,7 +16,7 @@ class SecondScreenSerializer(serializers.ModelSerializer):
 
 
 class ThirdScreenSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(source='image.image')
+    # image = serializers.ImageField(source='image.image')
 
     class Meta:
         model = ThirdScreen
