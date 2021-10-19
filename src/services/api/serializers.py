@@ -39,5 +39,7 @@ class ServiceCategorySerializer(serializers.ModelSerializer):
 class ServiceDetailSerializer(ServiceSerializer):
     reviews = ServiceReviewSerializer(many=True)
     article = ServiceArticleSerializer()
-    image = serializers.ImageField(source='image.image')
+    image = serializers.ImageField(source='image.image', allow_null=True)
+    image__alt = serializers.ImageField(source='image.alt', allow_null=True)
+    image__title = serializers.ImageField(source='image.title', allow_null=True)
     category = serializers.CharField(source='category.name')
