@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models.fields.files import ImageFieldFile
 from rest_framework.exceptions import ValidationError
+from rest_framework.pagination import PageNumberPagination
 from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
 from autoslug.utils import slugify
 
@@ -104,3 +105,9 @@ def change_text(models):
         model.firstscreen.save()
         model.secondscreen.save()
         model.thirdscreen.save()
+
+
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 1000
+    page_size_query_param = 'per_page'
+    max_page_size = 10000

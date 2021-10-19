@@ -1,21 +1,17 @@
-from itertools import count
-
 from django.contrib.auth.models import User
 from django.db.models import Avg, Count
 from django.http import JsonResponse, HttpResponseBadRequest
 from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404, CreateAPIView
-from taggit.models import Tag
-from django.forms.models import model_to_dict
 
-from app.settings import base
-from articles.api.serializers import ArticleListSerializer, TagSerializer, CommentSerializer, ArticleRatingSerializer, \
-    ArticleViewSerializer, ArticleDetailSerializer
-from articles.models import Article, Comment, ArticleRating, ArticleView, Paragraphs
-from core.utils import get_user_ip, queryset_pagination, get_user_by_jwt
+from taggit.models import Tag
+from articles.api.serializers import ArticleListSerializer, TagSerializer, CommentSerializer, ArticleRatingSerializer, ArticleDetailSerializer
+from articles.models import Article, Comment, ArticleRating
+from core.utils import get_user_ip, get_user_by_jwt, LargeResultsSetPagination
 
 
 class ArticleListView(ListAPIView):
     serializer_class = ArticleListSerializer
+    pagination_class = LargeResultsSetPagination
 
     def get_queryset(self):
         return self.queryset.annotate(rating=Avg('article_rating__rating'), count_votes=Count('article_rating'),
@@ -32,6 +28,7 @@ class TagsListView(ListAPIView):
 
 class ArticleCommentListView(ListAPIView):
     serializer_class = CommentSerializer
+    pagination_class = LargeResultsSetPagination
 
     def get_queryset(self):
         return Comment.objects.filter(article__id=self.kwargs['id'], status=1)
