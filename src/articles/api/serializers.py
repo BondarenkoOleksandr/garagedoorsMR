@@ -28,9 +28,9 @@ class ArticleBaseSerializer(serializers.ModelSerializer):
     comments_count = serializers.CharField()
     views_count = serializers.CharField()
     publish_date = serializers.DateField(format="%d %b %Y")
-    # bg_image = serializers.ImageField(source='bg_image.image')
-    # bg_image__alt = serializers.CharField(source='bg_image.alt')
-    # bg_image__title = serializers.CharField(source='bg_image.title')
+    bg_image = serializers.ImageField(source='bg_image.image', allow_null=True)
+    bg_image__alt = serializers.CharField(source='bg_image.alt', allow_null=True)
+    bg_image__title = serializers.CharField(source='bg_image.title', allow_null=True)
     author__first_name = serializers.CharField(source='author.first_name')
     author__last_name = serializers.CharField(source='author.last_name')
     seo = SEOArticleSerializer()
@@ -55,7 +55,7 @@ class ArticleViewSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(source='user.profile.image')
+    image = serializers.ImageField(source='user.profile.image', allow_null=True)
     pub_date = serializers.DateField(format="%d %b %Y")
     user__first_name = serializers.CharField(source='user.first_name')
     user__last_name = serializers.CharField(source='user.last_name')
