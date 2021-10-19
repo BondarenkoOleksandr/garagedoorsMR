@@ -53,13 +53,13 @@ class ServiceCategory(models.Model):
 class ServiceArticle(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    article = models.OneToOneField(Service, null=True, on_delete=models.SET_NULL)
+    article = models.OneToOneField(Service, null=True, on_delete=models.SET_NULL, related_name='article')
     subtitle = models.CharField(max_length=200)
     text = models.TextField()
 
 
 class ServiceReview(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True)
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True, related_name='reviews')
     name = models.CharField(max_length=250)
     city = models.ForeignKey(to=City, on_delete=models.SET_NULL, null=True)
     state = models.ForeignKey(to=State, on_delete=models.SET_NULL, null=True)

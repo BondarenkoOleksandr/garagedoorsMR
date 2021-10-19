@@ -21,6 +21,7 @@ class Employee(models.Model):
         editable=False,
         default=uuid.uuid1
     )
+
     def __str__(self):
         return self.name + ' - ' + self.position
 
@@ -33,7 +34,7 @@ class Review(models.Model):
         (4, 'Good'),
         (5, 'Excellent'),
     )
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='reviews')
     name = models.CharField(max_length=250)
     pub_date = models.DateField()
     text = models.TextField()

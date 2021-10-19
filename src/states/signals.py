@@ -2,11 +2,11 @@ from autoslug.utils import slugify
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from cities.models import City
+from states.models import State
 
 
-@receiver(post_save, sender=City)
-def save_city(sender, instance, created, **kwargs):
+@receiver(post_save, sender=State)
+def save_state(sender, instance, created, **kwargs):
 
     if created:
         value = instance.name

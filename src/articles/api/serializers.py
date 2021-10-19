@@ -1,19 +1,13 @@
 from rest_framework import serializers
 from taggit.models import Tag
 
-from articles.models import Article, ArticleView, ArticleRating, Comment
+from articles.models import Article, ArticleView, ArticleRating, Comment, SEOArticle, Paragraphs
 
 
-class ArticleSerializer(serializers.ModelSerializer):
+class SEOArticleSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Article
-        fields = '__all__'
-
-
-class ArticleViewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ArticleView
-        fields = '__all__'
+        model = SEOArticle
+        exclude = ['article']
 
 
 class ArticleRatingSerializer(serializers.ModelSerializer):
@@ -22,10 +16,53 @@ class ArticleRatingSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ParagraphsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Paragraphs
+        exclude = ['article', 'id']
+
+
+class ArticleBaseSerializer(serializers.ModelSerializer):
+    rating = serializers.CharField()
+    count_votes = serializers.CharField()
+    comments_count = serializers.CharField()
+    views_count = serializers.CharField()
+    publish_date = serializers.DateField(format="%d %b %Y")
+    bg_image = serializers.ImageField(source='bg_image.image')
+    bg_image__alt = serializers.CharField(source='bg_image.alt')
+    bg_image__title = serializers.CharField(source='bg_image.title')
+    author__first_name = serializers.CharField(source='author.first_name')
+    author__last_name = serializers.CharField(source='author.last_name')
+    seo = SEOArticleSerializer()
+
+    class Meta:
+        model = Article
+        fields = '__all__'
+
+
+class ArticleListSerializer(ArticleBaseSerializer):
+    pass
+
+
+class ArticleDetailSerializer(ArticleBaseSerializer):
+    paragraphs = ParagraphsSerializer(many=True)
+
+
+class ArticleViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ArticleView
+        fields = '__all__'
+
+
 class CommentSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(source='user.profile.image')
+    pub_date = serializers.DateField(format="%d %b %Y")
+    user__first_name = serializers.CharField(source='user.first_name')
+    user__last_name = serializers.CharField(source='user.last_name')
+
     class Meta:
         model = Comment
-        fields = '__all__'
+        exclude = ['article', 'status']
 
 
 class TagSerializer(serializers.ModelSerializer):

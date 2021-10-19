@@ -1,59 +1,25 @@
-import datetime
-import json
+from itertools import count
 
 from django.contrib.auth.models import User
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from django.http import JsonResponse, HttpResponseBadRequest
-from django.core import serializers
-from django.core.serializers.json import DjangoJSONEncoder
-from requests import Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404, CreateAPIView
 from taggit.models import Tag
 from django.forms.models import model_to_dict
 
-from accounts.models import UserProfile
 from app.settings import base
-from articles.api.serializers import ArticleSerializer, TagSerializer, CommentSerializer, ArticleRatingSerializer
+from articles.api.serializers import ArticleListSerializer, TagSerializer, CommentSerializer, ArticleRatingSerializer, \
+    ArticleViewSerializer, ArticleDetailSerializer
 from articles.models import Article, Comment, ArticleRating, ArticleView, Paragraphs
 from core.utils import get_user_ip, queryset_pagination, get_user_by_jwt
 
 
 class ArticleListView(ListAPIView):
-    queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
+    serializer_class = ArticleListSerializer
 
-    def get(self, request):
-        articles = Article.objects.all()
-        articles = Article.objects.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt',
-                                          'bg_image__image', 'bg_image__alt', 'bg_image__title',
-                                          'publish_date',
-                                          'slug')
-
-        articles = queryset_pagination(request, articles)
-        indx = 0
-        for article in articles:
-            article.update({'comments_count': Comment.objects.filter(article__id=article['id'], status=1).count(),
-                            'views_count': ArticleView.objects.filter(IPAddress=get_user_ip(request),
-                                                                      article__id=article['id']).count(),
-                            'rating': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
-                                                                   article__id=article['id']).aggregate(
-                                Avg('rating')),
-                            'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
-                                                                        article__id=article['id']).count(),
-                            })
-            if article['publish_date']:
-                article.update({'publish_date': article['publish_date'].strftime("%d %b %Y")})
-
-            if article['bg_image__image']:
-                article.update({'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article[
-                    'bg_image__image']})
-                del article['bg_image__image']
-
-            indx += 1
-
-        data = list(articles)
-
-        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
+    def get_queryset(self):
+        return self.queryset.annotate(rating=Avg('article_rating__rating'), count_votes=Count('article_rating'),
+                                      comments_count=Count('comments'), views_count=Count('articleview'))
 
 
 class TagsListView(ListAPIView):
@@ -67,121 +33,28 @@ class TagsListView(ListAPIView):
 class ArticleCommentListView(ListAPIView):
     serializer_class = CommentSerializer
 
-    def get(self, request, id):
-        comments = Comment.objects.filter(article__id=id, status=1).values('id', 'user__first_name', 'user__id',
-                                                                           'user__last_name', 'parent__id', 'text',
-                                                                           'pub_date')
-        comments = queryset_pagination(self.request, comments)
-        for comment in comments:
-            user = UserProfile.objects.get(user__id=comment.pop('user__id'))
-            comment.update({'image': request.scheme + '://' + request.get_host() + user.image.url,
-                            'pub_date': comment['pub_date'].strftime("%d %b %Y")})
-
-        return JsonResponse(list(comments), safe=False, json_dumps_params={'indent': 2})
+    def get_queryset(self):
+        return Comment.objects.filter(article__id=self.kwargs['id'], status=1)
 
 
 class ArticleDetailView(RetrieveAPIView):
-    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()
+    serializer_class = ArticleDetailSerializer
+    lookup_field = 'id'
 
-    def get(self, request, id):
-        article = Article.objects.filter(id=id)
-        if not article:
-            return JsonResponse(['Article not fount'], safe=False)
-        tags_list = list(article.first().tags.values('name'))
-        obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
-        article = article.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt', 'bg_image__image',
-                                 'bg_image__alt', 'bg_image__title',
-                                 'publish_date', 'slug')
-
-        article = queryset_pagination(request, article)
-
-        for art in article:
-            paragr = []
-            for model in Paragraphs.objects.filter(article__id=id):
-                dict_model = model_to_dict(model, fields=['title', 'text', 'quote'])
-                try:
-                    dict_model.update({'image': request.build_absolute_uri(model.image.url)})
-                except:
-                    dict_model.update({'image': None})
-                paragr.append(dict_model)
-            art.update({'comments_count': Comment.objects.filter(article__id=id, status=1).count(),
-                        'views_count': ArticleView.objects.filter(IPAddress=get_user_ip(request),
-                                                                  article__id=id).count(),
-                        'rating': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
-                                                               article__id=id).aggregate(Avg('rating')),
-                        'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
-                                                                    article__id=id).count(),
-                        'tags': tags_list,
-                        'paragraphs': paragr})
-
-            if art['publish_date']:
-                art.update({'publish_date': art['publish_date'].strftime("%d %b %Y")})
-
-            if art['bg_image__image']:
-                art.update({'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + art[
-                    'bg_image__image']})
-                del art['bg_image__image']
-
-        data = list(article)
-
-        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
+    def get_queryset(self):
+        return self.queryset.annotate(rating=Avg('article_rating__rating'), count_votes=Count('article_rating'),
+                                      comments_count=Count('comments'), views_count=Count('articleview'))
 
 
 class ArticleDetailBySlugView(RetrieveAPIView):
-    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()
+    serializer_class = ArticleDetailSerializer
+    lookup_field = 'slug'
 
-    def get(self, request, slug):
-        article = Article.objects.filter(slug=slug)
-        tags_list = list(article.first().tags.values('name', 'slug'))
-        if not article:
-            return JsonResponse(['Article not fount'], safe=False)
-        obj, created = ArticleView.objects.get_or_create(IPAddress=get_user_ip(request), article=article.first())
-        seo = {}
-
-        if hasattr(article.first(), 'seo'):
-            seo = model_to_dict(article.first().seo)
-        article = article.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt', 'bg_image__image',
-                                 'bg_image__alt', 'bg_image__title',
-                                 'publish_date', 'slug')
-
-        for art in article:
-            paragr = []
-            for model in Paragraphs.objects.filter(article__slug=slug):
-                dict_model = model_to_dict(model, fields=['title', 'text', 'quote'])
-                try:
-                    dict_model.update({'image': request.build_absolute_uri(model.image.url)})
-                except:
-                    dict_model.update({'image': None})
-                paragr.append(dict_model)
-            art.update({'comments_count': Comment.objects.filter(article__slug=slug, status=1).count(),
-                        'views_count': ArticleView.objects.filter(IPAddress=get_user_ip(request),
-                                                                  article__slug=slug).count(),
-                        'rating': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
-                                                               article__slug=slug).aggregate(Avg('rating')),
-                        'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
-                                                                    article__slug=slug).count(),
-                        'tags': tags_list,
-                        'paragraphs': paragr,
-                        'seo': seo})
-
-
-            if art['publish_date']:
-                art.update({'publish_date': art['publish_date'].strftime("%d %b %Y")})
-
-            if art['bg_image__image']:
-                art.update({'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + art[
-                    'bg_image__image']})
-                del art['bg_image__image']
-
-
-        try:
-            article.first().update({'image': request.get_host() + base.MEDIA_URL + art['image']})
-        except:
-            article.first().update({'image': None})
-
-        data = list(article)
-
-        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
+    def get_queryset(self):
+        return self.queryset.annotate(rating=Avg('article_rating__rating'), count_votes=Count('article_rating'),
+                                      comments_count=Count('comments'), views_count=Count('articleview'))
 
 
 class ArticleRatingCreateView(CreateAPIView):
@@ -202,50 +75,21 @@ class ArticleRatingCreateView(CreateAPIView):
         return JsonResponse({'success': 1, 'rating': obj.rating})
 
 
-class ArticleByTagView(RetrieveAPIView):
-    def get(self, request, *args, **kwargs):
-        search_tags = self.request.GET.get('tags', '').lower().split(',')
-        articles_by_tag = Article.objects.filter(tags__slug__in=search_tags).distinct()
-        tags_list = [list(obj.tags.values('name', 'slug')) for obj in articles_by_tag]
-        articles_by_tag = articles_by_tag.values('id', 'author__first_name', 'author__last_name', 'title', 'excerpt',
-                                                 'bg_image__image', 'bg_image__alt', 'bg_image__title', 'publish_date', 'slug')
-        articles_by_tag = queryset_pagination(request, articles_by_tag)
-        indx = 0
-        for article in articles_by_tag:
-            article.update(
-                {'comments_count': Comment.objects.filter(article__id=article['id'], status=1).count(),
-                 'views_count': ArticleView.objects.filter(IPAddress=get_user_ip(request),
-                                                           article__id=article['id']).count(),
-                 'rating': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
-                                                        article__id=article['id']).aggregate(
-                     Avg('rating')),
-                 'count_votes': ArticleRating.objects.filter(IPAddress=get_user_ip(request),
-                                                             article__id=article['id']).count(),
-                 'tags': tags_list[indx],
-                 })
+class ArticleByTagView(ListAPIView):
+    serializer_class = ArticleListSerializer
 
-            if article['publish_date']:
-                article.update({'publish_date': article['publish_date'].strftime("%d %b %Y")})
-
-            if article['bg_image__image']:
-                article.update({'image': request.scheme + '://' + request.get_host() + '/' + base.MEDIA_URL + article[
-                    'bg_image__image']})
-                del article['bg_image__image']
-
-            indx += 1
-
-        data = list(articles_by_tag)
-
-        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
+    def get_queryset(self):
+        search_tags = self.request.data.get('tags', '').lower().split(',')
+        queryset = Article.objects.filter(tags__slug__in=search_tags).distinct()
+        return queryset.annotate(rating=Avg('article_rating__rating'), count_votes=Count('article_rating'),
+                                 comments_count=Count('comments'), views_count=Count('articleview'))
 
 
 class CreateCommentAPI(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
         article_id = request.data.get('article', '')
         text = request.data.get('text', '')
-        print(text)
         parent = request.data.get('parent', '')
 
         user = get_user_by_jwt(request)
@@ -256,7 +100,7 @@ class CreateCommentAPI(CreateAPIView):
             comment = Comment.objects.create(
                 user=user,
                 article=article,
-                    text=text,
+                text=text,
             )
 
             if parent:

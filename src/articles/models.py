@@ -40,9 +40,9 @@ class Article(models.Model):
     def number_of_likes(self):
         return self.likes.count()
 
-    @property
-    def views_count(self):
-        return ArticleView.objects.filter(article=self).count()
+    # @property
+    # def views_count(self):
+    #     return ArticleView.objects.filter(article=self).count()
 
     def get_slug(self):
         return self.slug
@@ -65,7 +65,7 @@ class ArticleRating(models.Model):
         (5, 'Excellent'),
     )
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='article_rating')
-    rating = models.SmallIntegerField(choices=STARS, null=True, default=STARS[0])
+    rating = models.SmallIntegerField(choices=STARS, null=True, default=STARS[4][0])
     IPAddress = models.GenericIPAddressField(default="45.243.82.169")
 
     @property

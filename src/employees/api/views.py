@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, get_object_or_404
 
 from core.utils import queryset_pagination
-from employees.api.serializers import EmployeeSerializer, ReviewSerializer
+from employees.api.serializers import EmployeeSerializer, EmployeeReviewSerializer
 from employees.models import Employee, Review
 
 
@@ -17,7 +17,7 @@ class EmployeeListView(ListAPIView):
 
 class EmployeeReviewCreateAPIView(CreateAPIView):
     queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
+    serializer_class = EmployeeReviewSerializer
 
     def post(self, request):
         employee_id = request.POST.get('employee', None)
@@ -31,31 +31,13 @@ class EmployeeReviewCreateAPIView(CreateAPIView):
 
 
 class EmployeeDetailView(RetrieveAPIView):
+    queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
-
-    def get(self, request, slug):
-        employee = get_object_or_404(Employee, slug=slug)
-        reviews = Review.objects.filter(employee=employee)
-        reviews_list = []
-        indx = 0
-        for review in reviews:
-            reviews_list.append(model_to_dict(review, fields=['name', 'text', 'rating']))
-            reviews_list[indx].update({'publish_date': review.pub_date.strftime("%d %b %Y")})
-            indx += 1
-        data = model_to_dict(employee, fields=['name', 'position', 'type_of_works', 'slug'])
-        if employee.photo.image:
-            data.update({'photo': request.build_absolute_uri(employee.photo.image.url)})
-            data.update({'photo_alt': request.build_absolute_uri(employee.photo.image.alt)})
-            data.update({'photo_title': request.build_absolute_uri(employee.photo.image.title)})
-        data.update({'state': employee.state.name})
-        data.update({'reviews': reviews_list})
-        if hasattr(employee, 'seo'):
-            data.update({'seo': model_to_dict(employee.seo)})
-        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
+    lookup_field = 'slug'
 
 
 class EmployeeReviewList(ListAPIView):
-    serializer_class = ReviewSerializer
+    serializer_class = EmployeeReviewSerializer
 
     def get_queryset(self):
         return Review.objects.filter(employee__id=self.kwargs['id'])
