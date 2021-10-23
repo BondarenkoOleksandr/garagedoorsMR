@@ -75,6 +75,7 @@ class ArticleRatingCreateView(CreateAPIView):
 
 class ArticleByTagView(ListAPIView):
     serializer_class = ArticleListSerializer
+    pagination_class = LargeResultsSetPagination
 
     def get_queryset(self):
         search_tags = self.request.GET.get('tags', '').lower().split(',')
