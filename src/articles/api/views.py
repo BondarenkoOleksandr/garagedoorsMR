@@ -77,7 +77,7 @@ class ArticleByTagView(ListAPIView):
     serializer_class = ArticleListSerializer
 
     def get_queryset(self):
-        search_tags = self.request.data.get('tags', '').lower().split(',')
+        search_tags = self.request.GET.get('tags', '').lower().split(',')
         queryset = Article.objects.filter(tags__slug__in=search_tags).distinct()
         return queryset.annotate(rating=Avg('article_rating__rating'), count_votes=Count('article_rating'),
                                  comments_count=Count('comments'), views_count=Count('articleview'))

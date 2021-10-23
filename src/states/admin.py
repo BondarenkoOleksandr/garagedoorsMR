@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from states.models import State, FirstScreen, SecondScreen, ThirdScreen
+from states.models import State, FirstScreen, SecondScreen, ThirdScreen, SEOState
 
 
 class FirstScreenInlines(admin.StackedInline):
@@ -14,6 +14,10 @@ class SecondScreenInlines(admin.StackedInline):
 
 class ThirdScreenInlines(admin.StackedInline):
     model = ThirdScreen
+
+
+class SEOStateInlines(admin.StackedInline):
+    model = SEOState
 
 
 class StatesModelAdmin(admin.ModelAdmin):
