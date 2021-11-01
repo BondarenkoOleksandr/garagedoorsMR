@@ -6,6 +6,7 @@ from services.models import Service, ServiceCategory, ServiceReview, SEOServiceA
 class SEOServiceArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = SEOServiceArticle
+        fields = '__all__'
 
 
 class ServiceReviewSerializer(serializers.ModelSerializer):

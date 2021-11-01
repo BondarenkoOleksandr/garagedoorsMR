@@ -3,19 +3,19 @@ from rest_framework import serializers
 from cities.models import City, FirstScreen, SecondScreen, ThirdScreen
 
 
-class FirstScreenSerializer(serializers.ModelSerializer):
+class FirstScreenCitySerializer(serializers.ModelSerializer):
     class Meta:
         model = FirstScreen
         fields = '__all__'
 
 
-class SecondScreenSerializer(serializers.ModelSerializer):
+class SecondScreenCitySerializer(serializers.ModelSerializer):
     class Meta:
         model = SecondScreen
         fields = '__all__'
 
 
-class ThirdScreenSerializer(serializers.ModelSerializer):
+class ThirdScreenCitySerializer(serializers.ModelSerializer):
     image = serializers.ImageField(source='image.image', allow_null=True)
 
     class Meta:
@@ -31,9 +31,9 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class CityDetailSerializer(serializers.ModelSerializer):
-    firstscreen = FirstScreenSerializer()
-    secondscreen = SecondScreenSerializer()
-    thirdscreen = ThirdScreenSerializer()
+    firstscreen = FirstScreenCitySerializer()
+    secondscreen = SecondScreenCitySerializer()
+    thirdscreen = ThirdScreenCitySerializer()
 
     class Meta:
         model = City
