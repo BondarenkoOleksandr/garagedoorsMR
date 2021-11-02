@@ -51,10 +51,8 @@ class ServiceCategory(models.Model):
 
 
 class ServiceArticle(models.Model):
-    title = models.CharField(max_length=200)
-    description = models.TextField()
     article = models.OneToOneField(Service, null=True, on_delete=models.SET_NULL, related_name='article')
-    subtitle = models.CharField(max_length=200)
+    title = models.CharField(max_length=200)
     text = models.TextField()
 
 
