@@ -7,7 +7,6 @@ from django.core.management.utils import get_random_secret_key
 from core.utils import get_now
 
 
-
 def user_create(email, password=None, **extra_fields) -> User:
     extra_fields = {
         'is_staff': False,

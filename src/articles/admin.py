@@ -8,12 +8,16 @@ class ArticleInlines(admin.StackedInline):
     model = Paragraphs
 
 
+class ArticleRatingInlines(admin.StackedInline):
+    model = ArticleRating
+
+
 class SEOArticleInlines(admin.StackedInline):
     model = SEOArticle
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    inlines = (ArticleInlines, SEOArticleInlines)
+    inlines = (ArticleInlines, ArticleRatingInlines, SEOArticleInlines)
     search_fields = ['title']
     form = ArticleForm
 
