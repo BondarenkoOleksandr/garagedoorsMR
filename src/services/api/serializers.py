@@ -11,6 +11,7 @@ class SEOServiceArticleSerializer(serializers.ModelSerializer):
 
 class ServiceReviewSerializer(serializers.ModelSerializer):
     date = serializers.DateField(format="%d %b %Y")
+    state = serializers.CharField(source='city.state.name')
 
     class Meta:
         model = ServiceReview
@@ -21,6 +22,7 @@ class ServiceSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(source='image.image', allow_null=True)
     image__alt = serializers.CharField(source='image.alt', allow_null=True)
     image__title = serializers.CharField(source='image.title', allow_null=True)
+
     class Meta:
         model = Service
         fields = '__all__'
