@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from services.models import Service, ServiceCategory, ServiceReview, SEOServiceArticle, ServiceArticle
+from services.models import Service, ServiceCategory, ServiceReview, ServiceArticle, SEOService
 
 
 class SEOServiceArticleSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SEOServiceArticle
+        model = SEOService
         fields = '__all__'
 
 
