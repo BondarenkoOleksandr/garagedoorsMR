@@ -8,6 +8,9 @@ def city_seo():
         seo_description = f'Garage Doors Repair™ is a full-service garage door company in {city.name} that provides 24/7 residential & commercial repair, installation, and maintenance services!'
         seo_canonical = 'https://google.com.ua'
         seo_robots = 'INDEX, FOLLOW'
+        link=""
+        if city.firstscreen.image:
+            link = city.firstscreen.image.image.url
         seo_schema = """{
           "@context" : "http://schema.org",
           "@type": "LocalBusiness",
@@ -31,7 +34,7 @@ def city_seo():
             "Mo-Sa 00:00-23:59"
           ],
           "email" :"info@{domain}",
-          "image" :\"""" + city.firstscreen.image.image.url + """ ",
+          "image" :\"""" + link + """ ",
           "vatID": "11965684",
     
           "description": "Garage Doors Repair™ is a full-service garage door company in {город} that provides 24/7 residential & commercial repair, installation, and maintenance services!"
@@ -43,7 +46,7 @@ def city_seo():
         <meta property="og:url" content="current url">
         <meta property="og:description" content="Garage Doors Repair™ is a full-service garage door company in {city.name} that provides 24/7 residential & commercial repair, installation, and maintenance services!">
         <meta property="og:type" content="article">
-        <meta property="og:image" content="{city.firstscreen.image.image.url}">"""
+        <meta property="og:image" content="{link}">"""
 
         SEOCity.objects.create(
             state=city,
