@@ -22,6 +22,7 @@ class ServiceSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(source='image.image', allow_null=True)
     image__alt = serializers.CharField(source='image.alt', allow_null=True)
     image__title = serializers.CharField(source='image.title', allow_null=True)
+    seo = SEOServiceArticleSerializer()
 
     class Meta:
         model = Service
@@ -29,7 +30,6 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class ServiceArticleSerializer(serializers.ModelSerializer):
-    seo = SEOServiceArticleSerializer()
 
     class Meta:
         model = ServiceArticle
