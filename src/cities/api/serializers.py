@@ -1,11 +1,17 @@
 from rest_framework import serializers
 
-from cities.models import City, FirstScreen, SecondScreen, ThirdScreen
+from cities.models import City, FirstScreen, SecondScreen, ThirdScreen, SEOCity
 
 
 class FirstScreenCitySerializer(serializers.ModelSerializer):
     class Meta:
         model = FirstScreen
+        fields = '__all__'
+
+
+class SEOCitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SEOCity
         fields = '__all__'
 
 
@@ -31,6 +37,7 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class CityDetailSerializer(serializers.ModelSerializer):
+    seo = SEOCitySerializer()
     firstscreen = FirstScreenCitySerializer()
     secondscreen = SecondScreenCitySerializer()
     thirdscreen = ThirdScreenCitySerializer()

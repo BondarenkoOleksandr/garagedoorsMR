@@ -1,7 +1,12 @@
 from rest_framework import serializers
 
-from states.models import State, FirstScreen, SecondScreen, ThirdScreen
+from states.models import State, FirstScreen, SecondScreen, ThirdScreen, SEOState
 
+
+class SEOStateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SEOState
+        fields = '__all__'
 
 class FirstScreenStateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,6 +36,7 @@ class StateSerializer(serializers.ModelSerializer):
 
 
 class StateDetailSerializer(serializers.ModelSerializer):
+    seo = SEOStateSerializer()
     firstscreen = FirstScreenStateSerializer()
     secondscreen = SecondScreenStateSerializer()
     thirdscreen = ThirdScreenStateSerializer()
